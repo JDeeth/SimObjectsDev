@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// SimLED v1.00
+// SimLED Development Version
 //
 // Copyright 2012 Jack Deeth
 //
@@ -21,8 +21,8 @@
 // incorporated into other projects.
 //
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef SIMLED_H
-#define SIMLED_H
+#ifndef SIMLEDDEV_H
+#define SIMLEDDEV_H
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
@@ -83,7 +83,7 @@ public:
          const bool   &invertLimits = false,
          const bool   &enableTest   = true,
          const bool   &enableFlash  = false);
-  
+
   SimLED(const int    &ledPin,
          FlightSimFloat *dr,
          const float  &lowLimit,
@@ -126,7 +126,11 @@ public:
   // masterReset has no effect when called on SimLEDs that aren't Master SimLEDs.
   //
   void masterReset(void);
-  
+
+  // while hasPower is false, all SimLEDs are extinguished. Represents simulated
+  // power from X-Plane, not physical electrical power on the USB supply!
+  static void isPowered(bool hasPower = true){ hasPower_ = hasPower; }
+
   // Operate the flashing sequence for flash-enabled SimLEDs.
   // When called with True, all flash-enabled SimLEDs will light when Active.
   // When called with False, they will be extinguished.
@@ -176,9 +180,10 @@ private:
   
   bool allowTest_;
   bool allowFlash_;
-  
-  static bool flashNow_;
+
+  static bool hasPower_;
   static bool testAll_;
+  static bool flashNow_;
   
   // Number of SimLEDs created
   static int count_;
@@ -323,8 +328,8 @@ void SimLED::update_(bool updateOutput) {
   if ( (allowFlash_ == true) && (flashNow_ == false) )
     lit_ = false;
   
-  // we are not lit if the sim isn't running
-  if(FlightSim.isEnabled() == false) {
+  // we are not lit if the sim isn't running or we have no simulated power
+  if( (FlightSim.isEnabled() == false) || (hasPower_ == false) ) {
     lit_ = false;
   }
   
@@ -352,10 +357,11 @@ void SimLED::masterReset() {
 // Initialise static data members
 int SimLED::count_      = 0;
 SimLED* SimLED::first_  = 0;
+bool SimLED::hasPower_  = true;
 bool SimLED::testAll_   = false;
 bool SimLED::flashNow_  = true;
 // flashNow defaults True. If user does not implement a flash timer, SimLEDs
 // specified as flashing will instead stay steadily lit.
 
-#endif // SIMLED_H
+#endif // SIMLEDDEV_H
 
