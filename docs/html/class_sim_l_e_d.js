@@ -1,6 +1,7 @@
 var class_sim_l_e_d =
 [
     [ "SimLED", "class_sim_l_e_d.html#acb13aa215b7f112a8c87d26dba700235", null ],
+    [ "SimLED", "class_sim_l_e_d.html#a62e48b8e6081b867a1e8634bcb4a1a45", null ],
     [ "enableTest", "class_sim_l_e_d.html#a0b22e299070331b80355ed233df58220", null ],
     [ "isActive", "class_sim_l_e_d.html#a4de7e1a7bea30f0d85850ecdcc2da301", null ],
     [ "isLit", "class_sim_l_e_d.html#a4db160c5b05dea3c3fd52bac1498f25b", null ],

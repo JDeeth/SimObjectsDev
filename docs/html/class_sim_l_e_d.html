@@ -121,6 +121,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acb13aa215b7f112a8c87d26dba700235"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sim_l_e_d.html#acb13aa215b7f112a8c87d26dba700235">SimLED</a> (const int &amp;ledPin, const char *ident, const int &amp;lowLimit=1, const int &amp;highLimit=32000, const bool &amp;invertLimits=false, const bool &amp;<a class="el" href="class_sim_l_e_d.html#a0b22e299070331b80355ed233df58220">enableTest</a>=true)</td></tr>
 <tr class="memdesc:acb13aa215b7f112a8c87d26dba700235"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integer constructor.  <a href="#acb13aa215b7f112a8c87d26dba700235"></a><br/></td></tr>
 <tr class="separator:acb13aa215b7f112a8c87d26dba700235"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62e48b8e6081b867a1e8634bcb4a1a45"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sim_l_e_d.html#a62e48b8e6081b867a1e8634bcb4a1a45">SimLED</a> (const int &amp;ledPin, const char *ident, const double &amp;lowLimit, const double &amp;highLimit, const bool &amp;invertLimits=false, const bool &amp;<a class="el" href="class_sim_l_e_d.html#a0b22e299070331b80355ed233df58220">enableTest</a>=true)</td></tr>
+<tr class="memdesc:a62e48b8e6081b867a1e8634bcb4a1a45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Floating-point constructor.  <a href="#a62e48b8e6081b867a1e8634bcb4a1a45"></a><br/></td></tr>
+<tr class="separator:a62e48b8e6081b867a1e8634bcb4a1a45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4de7e1a7bea30f0d85850ecdcc2da301"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4de7e1a7bea30f0d85850ecdcc2da301"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sim_l_e_d.html#a4de7e1a7bea30f0d85850ecdcc2da301">isActive</a> (void)</td></tr>
 <tr class="memdesc:a4de7e1a7bea30f0d85850ecdcc2da301"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if input conditions would cause this LED to light. <br/></td></tr>
@@ -220,6 +223,70 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 </div>
 </div>
+<a class="anchor" id="a62e48b8e6081b867a1e8634bcb4a1a45"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SimLED::SimLED </td>
+          <td>(</td>
+          <td class="paramtype">const int &amp;&#160;</td>
+          <td class="paramname"><em>ledPin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>ident</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>lowLimit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>highLimit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool &amp;&#160;</td>
+          <td class="paramname"><em>invertLimits</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool &amp;&#160;</td>
+          <td class="paramname"><em>enableTest</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Floating-point constructor. </p>
+<p>Incorporating upper and lower limits. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ledPin</td><td>The Arduino pin number of the LED. </td></tr>
+    <tr><td class="paramname">ident</td><td>The dataref ident. MUST point to DatarefIdent string! </td></tr>
+    <tr><td class="paramname">lowLimit</td><td>The lower limit (inclusive) of the range of values which cause this LED to light. </td></tr>
+    <tr><td class="paramname">highLimit</td><td>The upper limit (inclusive) of the range of values which causes this LED to light. </td></tr>
+    <tr><td class="paramname">invertLimits</td><td>Inverts the active state of the LED. If true, lowLimit and highLimit specify the range where the LED is off. </td></tr>
+    <tr><td class="paramname">enableTest</td><td>Allows this LED to participate in bulb tests. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a851f8c94711a00cb821e217307cb994c"></a>
 <div class="memitem">
@@ -262,7 +329,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_sim_l_e_d.html">SimLED</a></li>
-    <li class="footer">Generated on Wed Nov 7 2012 02:24:06 for SimObjects by
+    <li class="footer">Generated on Wed Nov 7 2012 02:55:56 for SimObjects by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

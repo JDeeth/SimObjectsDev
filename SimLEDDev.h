@@ -48,7 +48,7 @@
 #endif
 
 //! Aid for recording the dataref identifier
-#define DatarefIdent PROGMEM const char
+#define DataRefIdent PROGMEM const char
 
 //! High-level dataref-to-LED linking class
 /*! Incorporating bulb-test and power-available features.*/
@@ -70,6 +70,25 @@ public:
            const char * ident,
            const int    &lowLimit     = 1,
            const int    &highLimit    = 32000,
+           const bool   &invertLimits = false,
+           const bool   &enableTest   = true);
+
+    //! Floating-point constructor
+    /*! Incorporating upper and lower limits.
+      \param ledPin The Arduino pin number of the LED.
+      \param ident The dataref ident. MUST point to DatarefIdent string!
+      \param lowLimit The lower limit (inclusive) of the range of values
+      which cause this LED to light.
+      \param highLimit The upper limit (inclusive) of the range of
+      values which causes this LED to light.
+      \param invertLimits Inverts the active state of the LED. If true,
+      lowLimit and highLimit specify the range where the LED is off.
+      \param enableTest Allows this LED to participate in bulb tests.
+      */
+    SimLED(const int    &ledPin,
+           const char * ident,
+           const double &lowLimit,
+           const double &highLimit,
            const bool   &invertLimits = false,
            const bool   &enableTest   = true);
 
@@ -99,14 +118,29 @@ public:
     void enableTest (bool allowTest)      {allowTest_ = allowTest;}
 
 private:
-    /// Arduino pin number of LED
+    /// Possible types of SimLED
+    enum SimLEDType {
+        SLUndefined,
+        SLInt,
+        SLFloat
+    };
+
+    /// Type of this SimLED instance.
+    SimLEDType type;
+
+    /// Arduino pin number of LED.
     int _pin;
 
+    /// Inverts active state if true.
     bool inverse_;
 
     FlightSimInteger _drI;
     int lowLimitI_;
     int highLimitI_;
+
+    FlightSimFloat _drF;
+    double lowLimitF_;
+    double highLimitF_;
 
     bool active_;
     bool lit_;
@@ -144,7 +178,25 @@ SimLED::SimLED(const int  &ledPin,
     inverse_(invertLimits),
     allowTest_(enableTest)
 {
+    type = SLInt;
     _drI.assign((const _XpRefStr_ *) &ident[0]);
+    addToLinkedList();
+}
+
+SimLED::SimLED(const int    &ledPin,
+               const char   *ident,
+               const double &lowLimit,
+               const double &highLimit,
+               const bool   &invertLimits,
+               const bool   &enableTest)  :
+    _pin(ledPin),
+    lowLimitF_(lowLimit),
+    highLimitF_(highLimit),
+    inverse_(invertLimits),
+    allowTest_(enableTest)
+{
+    type = SLFloat;
+    _drF.assign((const _XpRefStr_ *) &ident[0]);
     addToLinkedList();
 }
 
@@ -186,7 +238,14 @@ void SimLED::update( bool updateOutput) {
 // Determine whether this SimLED should be lit
 void SimLED::update_(bool updateOutput) {
 
-    active_ = (lowLimitI_ <= _drI && _drI <= highLimitI_);
+    switch(type) {
+    case SLInt:
+        active_ = (lowLimitI_ <= _drI && _drI <= highLimitI_);
+        break;
+    case SLFloat:
+        active_ = (lowLimitF_ <= _drF && _drF <= highLimitF_);
+        break;
+    }
 
     if(inverse_ == true)
         active_ = !active_;
