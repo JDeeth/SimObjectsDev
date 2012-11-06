@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">SimObjects
-   &#160;<span id="projectnumber">Development</span>
+   &#160;<span id="projectnumber">Development version</span>
    </div>
    <div id="projectbrief">High-level classes for connecting Arduino hardware elements to X-Plane datarefs</div>
   </td>
@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -91,7 +92,7 @@ $(document).ready(function(){initNavTree('class_sim_l_e_d.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -153,7 +154,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>High-level dataref-to-LED linking class. </p>
-<p>High-level dataref-to-LED linking class incorporating bulb-test and power-available features. </p>
+<p>Incorporating bulb-test and power-available features. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="acb13aa215b7f112a8c87d26dba700235"></a>
 <div class="memitem">
@@ -204,15 +205,15 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </div><div class="memdoc">
 
 <p>Integer constructor. </p>
-<p>Integer constructor incorporating upper and lower limits. </p>
+<p>Incorporating upper and lower limits. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ledPin</td><td>the Arduino pin number of the LED. </td></tr>
-    <tr><td class="paramname">ident</td><td>the dataref ident. MUST point to DatarefIdent string! </td></tr>
-    <tr><td class="paramname">lowLimit</td><td>the lower limit (inclusive) of the range of values which cause this LED to light. </td></tr>
-    <tr><td class="paramname">highLimit</td><td>the upper limit (inclusive) of the range of values which causes this LED to light. </td></tr>
-    <tr><td class="paramname">invertLimits</td><td>inverts the active state of the LED. If true, lowLimit and highLimit specify the range where the LED is off. </td></tr>
-    <tr><td class="paramname">enableTest</td><td>allows this LED to participate in bulb tests. </td></tr>
+    <tr><td class="paramname">ledPin</td><td>The Arduino pin number of the LED. </td></tr>
+    <tr><td class="paramname">ident</td><td>The dataref ident. MUST point to DatarefIdent string! </td></tr>
+    <tr><td class="paramname">lowLimit</td><td>The lower limit (inclusive) of the range of values which cause this LED to light. </td></tr>
+    <tr><td class="paramname">highLimit</td><td>The upper limit (inclusive) of the range of values which causes this LED to light. </td></tr>
+    <tr><td class="paramname">invertLimits</td><td>Inverts the active state of the LED. If true, lowLimit and highLimit specify the range where the LED is off. </td></tr>
+    <tr><td class="paramname">enableTest</td><td>Allows this LED to participate in bulb tests. </td></tr>
   </table>
   </dd>
 </dl>
@@ -243,10 +244,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </div><div class="memdoc">
 
 <p>Static function to update all SimLEDs. </p>
-<p>Static function to update all SimLEDs. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">updateOutput</td><td>if false, will update the state of each <a class="el" href="class_sim_l_e_d.html" title="High-level dataref-to-LED linking class.">SimLED</a> but not change the lit state. </td></tr>
+    <tr><td class="paramname">updateOutput</td><td>If false, will update the state of each <a class="el" href="class_sim_l_e_d.html" title="High-level dataref-to-LED linking class.">SimLED</a> but not change the lit state. </td></tr>
   </table>
   </dd>
 </dl>
@@ -262,7 +262,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_sim_l_e_d.html">SimLED</a></li>
-    <li class="footer">Generated on Wed Nov 7 2012 01:51:01 for SimObjects by
+    <li class="footer">Generated on Wed Nov 7 2012 02:24:06 for SimObjects by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

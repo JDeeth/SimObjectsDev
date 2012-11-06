@@ -1,27 +1,39 @@
-////////////////////////////////////////////////////////////////////////
-//
+
 // SimLED Development Version
-//
+
 // Copyright 2012 Jack Deeth
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as
-// published by the Free Software Foundation, either version 3 of the
-// License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public
-// License along with this program.
-// If not, see <http://www.gnu.org/licenses/>.
-//
-// I would appreciate, but not insist, on attribution if this code is
-// incorporated into other projects.
-//
-////////////////////////////////////////////////////////////////////////
+
+// The following lines are for the Doxygen automatic documentation tool.
+
+/*! \page intro Introduction
+ *  \title    SimObjects
+ *  \brief    A family of classes to connect hardware to X-Plane.
+ *  \details  Currently only SimLED for integers is implemented but this
+              will eventually incorporate most common types of
+              electrical components.
+ */
+
+/*! \page licence Licence
+ * Copyright 2012 Jack Deeth
+ * Contact: simulationelectronics@gmail.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program.
+ * If not, see <http://www.gnu.org/licenses/>.
+ *
+ * I would appreciate, but not insist, on attribution if this code is
+ * incorporated into other projects.
+ */
 
 #ifndef SIMLEDDEV_H
 #define SIMLEDDEV_H
@@ -35,25 +47,24 @@
 #include "pins_arduino.h"
 #endif
 
-/// Aid for recording the dataref identifier
+//! Aid for recording the dataref identifier
 #define DatarefIdent PROGMEM const char
 
 //! High-level dataref-to-LED linking class
-/*! High-level dataref-to-LED linking class incorporating bulb-test and
-    power-available features.*/
+/*! Incorporating bulb-test and power-available features.*/
 class SimLED {
 public:
     //! Integer constructor
-    /*! Integer constructor incorporating upper and lower limits.
-      \param ledPin the Arduino pin number of the LED.
-      \param ident the dataref ident. MUST point to DatarefIdent string!
-      \param lowLimit the lower limit (inclusive) of the range of values
+    /*! Incorporating upper and lower limits.
+      \param ledPin The Arduino pin number of the LED.
+      \param ident The dataref ident. MUST point to DatarefIdent string!
+      \param lowLimit The lower limit (inclusive) of the range of values
       which cause this LED to light.
-      \param highLimit the upper limit (inclusive) of the range of
+      \param highLimit The upper limit (inclusive) of the range of
       values which causes this LED to light.
-      \param invertLimits inverts the active state of the LED. If true,
+      \param invertLimits Inverts the active state of the LED. If true,
       lowLimit and highLimit specify the range where the LED is off.
-      \param enableTest allows this LED to participate in bulb tests.
+      \param enableTest Allows this LED to participate in bulb tests.
       */
     SimLED(const int    &ledPin,
            const char * ident,
@@ -66,18 +77,12 @@ public:
     static void setup(void);
 
     //! Static function to update all SimLEDs
-    /*! Static function to update all SimLEDs.
-      \param updateOutput if false, will update the state of each SimLED
+    /*!
+      \param updateOutput If false, will update the state of each SimLED
       but not change the lit state.
       */
     static void update (bool updateOutput = true);
 
-    // A SimLED isActive when the state of the datarefs would cause it
-    // to light. isLit is isActive with filters applied, to override the
-    // LED state for the following functions:
-    //
-    // - Light test
-    // - Simulator state (LEDs extinguish when sim is inactive)
     /// True if input conditions would cause this LED to light
     bool isActive(void) { return active_; }
 
