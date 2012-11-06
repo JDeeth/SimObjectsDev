@@ -1,33 +1,34 @@
 #include "SimLEDDev.h"
+#include "SimAnncDev.h"
 #include "Bounce.h"
 
 // begin first master warning set
-SimLED masterWarning (20);
+SimLED masterWarning (12);
 
 // warn if engine is on fire
 FlightSimInteger engineFireDR;
-SimLED engineFire (10, &engineFireDR);
+SimLED engineFire (13, &engineFireDR);
 
 // warn if oil temperature exceeds 200°C
 FlightSimFloat oilTemp;
-SimLED oilTempHigh (11, &oilTemp, 200, 999);
+SimLED oilTempHigh (14, &oilTemp, 200, 999);
 
 // begin second master warning set
-SimLED masterCaution (19);
+SimLED masterCaution (15);
 
 // caution if oil pressure drops below 2.5 PSI or exceeds 20 PSI
 FlightSimFloat oilPressure;
-SimLED oilPressUnsafe (12, &oilPressure, 2.5, 20, true);
+SimLED oilPressUnsafe (16, &oilPressure, 2.5, 20, true);
 
 // caution if fuel less than 150kg in tank 1
 FlightSimFloat fuelTotal;
-SimLED fuelLow (18, &fuelTotal, 0, 150);
+SimLED fuelLow (17, &fuelTotal, 0, 150);
 
 FlightSimInteger gearHandle;
 
-Bounce testLights   = Bounce (0, 5);
-Bounce warningReset = Bounce (3, 5);
-Bounce cautionReset = Bounce (7, 5);
+Bounce testLights   = Bounce (45, 5);
+Bounce warningReset = Bounce (41, 5);
+Bounce cautionReset = Bounce (42, 5);
 
 elapsedMillis flashTimer;
 
@@ -41,9 +42,9 @@ void setup() {
 
   gearHandle   = XPlaneRef("sim/cockpit2/controls/gear_handle_down");
   
-  pinMode (0, INPUT_PULLUP);
-  pinMode (3, INPUT_PULLUP);
-  pinMode (7, INPUT_PULLUP);
+  pinMode (45, INPUT_PULLUP);
+  pinMode (41, INPUT_PULLUP);
+  pinMode (42, INPUT_PULLUP);
 }
 
 void loop() {

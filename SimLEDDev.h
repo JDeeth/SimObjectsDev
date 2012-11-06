@@ -135,56 +135,56 @@ public:
   // When called with True, all flash-enabled SimLEDs will light when Active.
   // When called with False, they will be extinguished.
   static void flash (bool litNow)       { flashNow_ = litNow; }
-  
+
   // Sets whether this SimLED will react to the flash filter
   void enableFlash (bool allowFlash)    { allowFlash_ = allowFlash; }
-  
+
   // While called with 'true', will override enabled SimLEDs to light up.
   static void lightTest(bool lightAll)  {testAll_ = lightAll;}
-  
+
   // Enables or disables this SimLED's participation in lightTests
   void enableTest (bool allowTest)      {allowTest_ = allowTest;}
-  
+
 private:
   // Hardware pin of output LED
   int pin_;
-  
+
   // Defines this as Master, Int Annc., or Float Annc.
   SimLedType type_;
-  
+
   // Annc is active when dataref is between Low and High limits, unless
   // it is Inverse. Inverse anncs are active when dataref is NOT between
   // Low and High limits. Range is inclusive.
-  bool inverse_; 
-  
+  bool inverse_;
+
   FlightSimInteger * drInt_;
-  int lowLimitI_;     
-  int highLimitI_;    
-  
+  int lowLimitI_;
+  int highLimitI_;
+
   FlightSimFloat * drFloat_;
   float lowLimitF_;
   float highLimitF_;
-  
+
   // Annc input data is in range to activate this annc.
-  bool active_; 
-  
+  bool active_;
+
   // Per annc system simulation, this annc LED should be lit.
-  bool lit_;    
-  
+  bool lit_;
+
   // This Active_ annc has been Ack_nowledged by Master Reset key
-  bool ack_;    
-  
+  bool ack_;
+
   void addToLinkedList(void);
   void setup_ (void) {pinMode(pin_, OUTPUT);}
   void update_(bool updateOutput = true);
-  
+
   bool allowTest_;
   bool allowFlash_;
 
   static bool hasPower_;
   static bool testAll_;
   static bool flashNow_;
-  
+
   // Number of SimLEDs created
   static int count_;
   // Pointer to first SimLED in linked list
