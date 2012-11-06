@@ -35,11 +35,26 @@
 #include "pins_arduino.h"
 #endif
 
-// To make it easier to record the dataref identifier
+/// Aid for recording the dataref identifier
 #define DatarefIdent PROGMEM const char
 
+//! High-level dataref-to-LED linking class
+/*! High-level dataref-to-LED linking class incorporating bulb-test and
+    power-available features.*/
 class SimLED {
 public:
+    //! Integer constructor
+    /*! Integer constructor incorporating upper and lower limits.
+      \param ledPin the Arduino pin number of the LED.
+      \param ident the dataref ident. MUST point to DatarefIdent string!
+      \param lowLimit the lower limit (inclusive) of the range of values
+      which cause this LED to light.
+      \param highLimit the upper limit (inclusive) of the range of
+      values which causes this LED to light.
+      \param invertLimits inverts the active state of the LED. If true,
+      lowLimit and highLimit specify the range where the LED is off.
+      \param enableTest allows this LED to participate in bulb tests.
+      */
     SimLED(const int    &ledPin,
            const char * ident,
            const int    &lowLimit     = 1,
@@ -47,7 +62,14 @@ public:
            const bool   &invertLimits = false,
            const bool   &enableTest   = true);
 
+    //! Static function to initialise all SimLEDs
     static void setup(void);
+
+    //! Static function to update all SimLEDs
+    /*! Static function to update all SimLEDs.
+      \param updateOutput if false, will update the state of each SimLED
+      but not change the lit state.
+      */
     static void update (bool updateOutput = true);
 
     // A SimLED isActive when the state of the datarefs would cause it
@@ -56,37 +78,32 @@ public:
     //
     // - Light test
     // - Simulator state (LEDs extinguish when sim is inactive)
+    /// True if input conditions would cause this LED to light
     bool isActive(void) { return active_; }
+
+    /// True if this LED should light, applying filters (power, test etc)
     bool isLit(void)    { return lit_ ; }
 
-    // while hasPower is false, all SimLEDs are extinguished. Represents
-    // simulated power from X-Plane, not physical electrical power on
-    // the USB supply!
+    /// Sets state of simulated power availability
     static void isPowered(bool hasPower = true){ hasPower_ = hasPower; }
 
-    // calling with 'true' will cause enabled SimLEDs to light up.
+    /// Enable/disable bulb test mode
     static void lightTest(bool lightAll)  {testAll_ = lightAll;}
 
-    // Enables or disables this SimLED's participation in lightTests
+    /// Enable/disable this SimLED's participation in lightTests
     void enableTest (bool allowTest)      {allowTest_ = allowTest;}
 
 private:
-    // Hardware pin of output LED
+    /// Arduino pin number of LED
     int _pin;
 
-    // Annc is active when dataref is between Low and High limits,
-    // unless it is Inverse. Inverse anncs are active when dataref is
-    // NOT between Low and High limits. Range is inclusive.
     bool inverse_;
 
     FlightSimInteger _drI;
     int lowLimitI_;
     int highLimitI_;
 
-    // input data is in range to activate this LED.
     bool active_;
-
-    // Per annc system simulation, this LED should be lit.
     bool lit_;
 
     void addToLinkedList(void);
@@ -98,37 +115,18 @@ private:
     static bool hasPower_;
     static bool testAll_;
 
-    // Number of SimLEDs created
+    /// Number of SimLEDs created
     static int count_;
-    // Pointer to first SimLED in linked list
+
+    /// Pointer to first SimLED in linked list
     static SimLED* first_;
-    // Pointer to next SimLED in linked list. ==0 if we are last element
+
+    /// Pointer to next SimLED in linked list. ==0 if we are last element
     SimLED* next_;
 };
 
 ////////////////////////////////////////////////////////////////////////
 
-/* Constructors
-// if enableTest is True, the LED will be lit by the lightTest
-// function.
-//
-// Create SimLED
-// lowLimit and highLimit define the range where the SimLED is
-// ACTIVE.
-//
-// example: SimLED takeoffTrim(10, trimIdent, 0.10, 0.15);
-// active when trim is between 0.10 and 0.15
-//
-// If invertLimits is True, this is reversed, and they define the
-// range where the annunciator is INACTIVE.
-//
-// example: SimLED balanceWarn(10, cofgIdent, 0.20, -0.10);
-// balanceWarn will be inactive when the dataref is less than 0.20
-// and greater than -0.10 inclusive. Therefore it will be Active
-// outside of that range.
-//
-// Limit values are inclusive.
-*/
 SimLED::SimLED(const int  &ledPin,
                const char *ident,
                const int  &lowLimit,
@@ -159,10 +157,6 @@ void SimLED::addToLinkedList() {
     }
 }
 
-// Set up all SimLED objects. This simply calls setup_ on each
-// instance of SimLED, setting the pinMode to OUTPUT.
-//
-// Call this in the Arduino setup() function.
 void SimLED::setup() {
     if (count_ > 0) {
         SimLED* buf = first_;
@@ -173,11 +167,6 @@ void SimLED::setup() {
     }
 }
 
-// Update all SimLED objects. This lights them if their dataref is
-// in range or the test function is active, and the system has
-// power.
-//
-// Call this in the Arduino loop() function.
 void SimLED::update( bool updateOutput) {
 
     if (count_ > 0) {
