@@ -1,18 +1,14 @@
 #include "SimLEDDev.h"
 #include "Bounce.h"
+#include "LiquidCrystalFast.h"
 
-// Example code for SimLED
+// input hardware
+const int testButtonPin = 45;
+Bounce testLights = Bounce (testButtonPin, 5);
 
-// it is probably not necessary to give DataRefIdents a long or
-// especially descriptive name.
-
+// SimLED
 DataRefIdent ident1[] = "sim/cockpit2/controls/gear_handle_down";
 SimLED gearHandle1(12, ident1, 1, 1, true);
-
-// SimLED discriminates between float and int datarefs by the limits
-// you pass to the SimLED constructor. No limits or int limits imply
-// an int dataref. Float limits imply a float dataref. Mixed limits
-// will give you a compile error at best!
 
 DataRefIdent ident2[] = "sim/cockpit/radios/transponder_code";
 SimLED xpdrEmergency(13, ident2, 7700, 7700);
@@ -29,19 +25,47 @@ SimLED gearPosNose(16, ident5, 1.0, 999.0);
 DataRefIdent ident6[] = "sim/flightmodel2/gear/deploy_ratio[2]";
 SimLED gearPosRight(17, ident6, 1.0, 999.0);
 
+// LCD
+enum LCD_PINS {
+  RS = 27,
+  RW = 0,
+  EN,
+  D4,
+  D5,
+  D6,
+  D7,
+  BACKLIGHT = 24
+};
+
+LiquidCrystalFast lcd(RS, RW, EN, D4, D5, D6, D7);
+
+void setupLCD() {
+  pinMode (RS, OUTPUT);
+  pinMode (RW, OUTPUT);
+  pinMode (EN, OUTPUT);
+  pinMode (D4, OUTPUT);
+  pinMode (D5, OUTPUT);
+  pinMode (D6, OUTPUT);
+  pinMode (D7, OUTPUT);
+  pinMode (BACKLIGHT, OUTPUT);
+
+  analogWrite (BACKLIGHT, 128);
+  lcd.begin (16, 2);
+  lcd.write ("Hello World");
+}
+
 // Power available
-// this is a vanilla TeensyDuino FlightSimFloat (for now)
 FlightSimFloat supplyVolts;
 const float voltsNeeded = 10.0;
 
-Bounce testLights   = Bounce (45, 5);
-
 void setup() {
   SimLED::setup();
+
+  setupLCD();
   
   supplyVolts = XPlaneRef("sim/cockpit2/electrical/bus_volts[0]");
 
-  pinMode (45, INPUT_PULLUP);
+  pinMode (testButtonPin, INPUT_PULLUP);
 }
 
 void loop() {
