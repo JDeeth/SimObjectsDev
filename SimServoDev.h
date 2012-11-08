@@ -31,13 +31,11 @@
 
 
 #include "SimObjectsDev.h"
-#include <Servo.h>
+
 
 
 //! Input/output pairs for conversion
 typedef const double ScaleMap [][2];
-
-
 
 class SimServo {
 public:
@@ -56,6 +54,7 @@ public:
 
     if(_mapValid)
       _addToLinkedList();
+
   }
 
   //! Constructor where dataref is already the servo angle
@@ -67,7 +66,12 @@ public:
 
   //! debugging function to validate ScaleMap input
   bool inputValid() { return _mapValid; }
+
+  // debug
   int getMapPair() { return _mapPair; }
+
+  double getAngle() { return _out; }
+  double getInput() { return _in; }
 
   //! Static function to initialise all SimServos
   static void setup(void);
@@ -79,6 +83,18 @@ public:
   static void isPowered(bool hasPower = true){ _hasPower = hasPower; }
 
 private:
+
+  enum ScaleMapIndex {
+    In,
+    Out
+  };
+
+  //! Input value
+  double _in;
+
+  //! Computed angle to send to servo
+  double _out;
+
   //! Check ScaleMap input to see that input values are in increasing order
   bool _validateMap();
 
@@ -96,13 +112,13 @@ private:
   unsigned int _mapPair;
 
   bool _hasServo;
-  //Servo _servo;
+  Servo _servo;
 
   //! if true, will only move servo if isPowered was called with 'true'.
   static bool _hasPower;
 
   void _addToLinkedList(void);
-  void _setup  (void) { ;}//_servo.attach(_pin); }
+  void _setup  (void) { _servo.attach(_pin); }
   void _update (bool updateOutput = true);
 
   //! Number of this class created
@@ -131,7 +147,7 @@ bool SimServo::_validateMap() {
     default:
       ok = true;
       for(unsigned int i = 1; (i < _mapPair) && ok; ++i) {
-        if (_map[i][0] < _map[i-1][0])
+        if (_map[i][In] < _map[i-1][In])
           ok = false;
       } // for each pair
       break;
@@ -142,6 +158,36 @@ bool SimServo::_validateMap() {
 
 void SimServo::_update(bool updateOutput) {
 
+  _in = _dr;
+
+  if (_in <= _map[0][In]) {
+    _out = _map[0][Out];
+  }
+
+  if (_in >= _map[_mapPair-1][In]) {
+    _out = _map[_mapPair-1][Out];
+  }
+
+  for (int i = 1; i < _mapPair; ++i) {
+    if (_in < _map[i][In]) {
+
+      double zzbuf = _in;
+      zzbuf -= _map[i-1][In];
+      zzbuf /= _map[i][In] - _map[i-1][In];
+      zzbuf *= _map[i][Out] - _map[i-1][Out];
+      zzbuf += _map[i-1][Out];
+      _out = zzbuf;
+
+      // exit for loop
+      i = _mapPair;
+    }
+  }
+
+  if (updateOutput) {
+    _servo.write(_out);
+  }
+
+  return;
 }
 
 

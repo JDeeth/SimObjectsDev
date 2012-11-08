@@ -1,3 +1,6 @@
+//! not sure why I can't include servo.h from SimServoDev.h!
+#include "Servo.h"
+
 #include "SimLEDDev.h"
 #include "SimServoDev.h"
 #include "Bounce.h"
@@ -64,16 +67,31 @@ void setupLCD() {
 
   analogWrite (BACKLIGHT, 128);
   lcd.begin (16, 2);
-  if (flapGauge.inputValid())
-    lcd.print("Input valid!");
-  else
-    lcd.print("Input invalid!");
-  lcd.setCursor(0, 1);
-  lcd.print(flapGauge.getMapPair());
-  lcd.print(" pairs input");
+
+//  lcd.print(flapGauge.getMap(0,0));
+//  lcd.setCursor(0,1);
+//  lcd.print(flapGauge.getMap(0,1));
+//  lcd.setCursor(6,0);
+//  lcd.print(flapGauge.getMap(1,0));
+//  lcd.setCursor(6,1);
+//  lcd.print(flapGauge.getMap(1,1));
+//  lcd.setCursor(12,0);
+//  lcd.print(flapGauge.getMap(2,0));
+//  lcd.setCursor(12,1);
+//  lcd.print(flapGauge.getMap(2,1));
+//  if (flapGauge.inputValid())
+//    lcd.print("Input valid!");
+//  else
+//    lcd.print("Input invalid!");
+//  lcd.setCursor(0, 1);
+//  lcd.print(flapGauge.getMapPair());
+//  lcd.print(" pairs input");
 
 
 }
+
+elapsedMillis lcdTimer = 0;
+int lcdPeriod = 200;
 
 // Power available
 FlightSimFloat supplyVolts;
@@ -93,11 +111,24 @@ void setup() {
 void loop() {
   FlightSim.update();
   SimLED::update();
-  SimServo::update();
+  SimServo::update(false);
   testLights.update();
-  
+
+  if (lcdTimer > lcdPeriod) {
+    lcdTimer = 0;
+
+  lcd.clear();
+  lcd.setCursor(0, 0);
+
+  lcd.print ("Dataref: ");
+  lcd.print (flapGauge.getInput());
+  lcd.setCursor (0, 1);
+  lcd.print ("Angle: ");
+  lcd.print (flapGauge.getAngle());
+  }
+
   // Optional. Power defaults to 'available'.
-  SimLED::isPowered(supplyVolts > voltsNeeded);
+  //SimLED::isPowered(supplyVolts > voltsNeeded);
 
   SimLED::lightTest(testLights.read());
 }
