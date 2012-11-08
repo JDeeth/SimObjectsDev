@@ -1,10 +1,18 @@
 #include "SimLEDDev.h"
+#include "SimServoDev.h"
 #include "Bounce.h"
 #include "LiquidCrystalFast.h"
 
-// input hardware
-const int testButtonPin = 45;
-Bounce testLights = Bounce (testButtonPin, 5);
+// SimServo
+ScaleMap flapGaugeMap = {
+  {0.0, 120},
+  {34.0, 90},
+  {1.0, 45}
+};
+
+DataRefIdent identFlapRatio[] = "sim/flightmodel2/controls/flap1_deploy_ratio";
+
+SimServo flapGauge(11, identFlapRatio, flapGaugeMap, sizeof(flapGaugeMap));
 
 // SimLED
 DataRefIdent ident1[] = "sim/cockpit2/controls/gear_handle_down";
@@ -25,6 +33,10 @@ SimLED gearPosNose(16, ident5, 1.0, 999.0);
 DataRefIdent ident6[] = "sim/flightmodel2/gear/deploy_ratio[2]";
 SimLED gearPosRight(17, ident6, 1.0, 999.0);
 
+// input hardware
+const int testButtonPin = 45;
+Bounce testLights = Bounce (testButtonPin, 5);
+
 // LCD
 enum LCD_PINS {
   RS = 27,
@@ -38,6 +50,7 @@ enum LCD_PINS {
 };
 
 LiquidCrystalFast lcd(RS, RW, EN, D4, D5, D6, D7);
+
 
 void setupLCD() {
   pinMode (RS, OUTPUT);
@@ -60,6 +73,7 @@ const float voltsNeeded = 10.0;
 
 void setup() {
   SimLED::setup();
+  SimServo::setup();
 
   setupLCD();
   
@@ -71,6 +85,7 @@ void setup() {
 void loop() {
   FlightSim.update();
   SimLED::update();
+  SimServo::update();
   testLights.update();
   
   // Optional. Power defaults to 'available'.
