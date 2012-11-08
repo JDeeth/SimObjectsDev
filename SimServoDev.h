@@ -39,12 +39,34 @@ typedef const double ScaleMap [][2];
 
 class SimServo {
 public:
-  //! Constructor where we convert dataref to angle in this class
+  //! Constructor for when we need to convert the dataref into an angle.
+  /*! The SimServo will use a ScaleMap to convert the input dataref into
+   *  an angle, apply power-supply simulation, and if the connection to
+   *  X-Plane is active, move the servo.
+   *  \param pin Arduino pin linked to servo signal pin
+   *  \param ident DataRefIdent identifier of input dataref
+   *  \param map At least two pairs of doubles, defined using ScaleMap,
+   *  showing relationship between input and outputs.
+   *  \param sizeof_map IMPORTANT: this MUST be sizeof(foo), where foo
+   *  is the name of your ScaleMap. For example, SimServo myServo(5,
+   *  myIdent, myScaleMap, sizeof(myScaleMap);
+   *  \param restAngle Position servo will come to rest in when it lacks
+   *  simulated power. Set to -1 to have servo remain in position when
+   *  power is removed.
+   *  \param hasPowerFlag Pointer to boolean value that represents
+   *  simulated power supply. Default is SimServo::hasPower static
+   *  boolean. Set to 0 for servo to be always powered. (It will still
+   *  be stopped by calling SimServo::update(false).)
+   */
   SimServo (const unsigned short &pin,
             const char * ident,
             ScaleMap map,
-            const size_t &sizeof_map) :
-    _pin(pin)
+            const size_t &sizeof_map,
+            const int restAngle = -1,
+            const bool *hasPowerFlag = &SimServo::hasPower
+            ) :
+    _pin(pin),
+    _powerSource(hasPowerFlag)
   {
     _dr.assign((const _XpRefStr_ *) &ident[0]);
     _map = map;
@@ -55,23 +77,37 @@ public:
     if(_mapValid)
       _addToLinkedList();
 
+    if (hasPowerFlag == 0)
+      _needsPower = false;
+    else
+      _needsPower = true;
+
+    _restAngle = restAngle;
   }
 
-  //! Constructor where dataref is already the servo angle
+  //! Constructor where the dataref is already a suitable angle
   /*! This will be used when plugins will do the data-to-servo-angle
-   *  mapping on the PC, allowing easier configuration for the end-user.
+   *  mapping on the PC, avoiding the need to alter the Teensy's source
+   *  code to configure the servo. This is just a prototype.
+   *  \todo Implementation of precomputed-dataref SimServo
    */
   SimServo (const int &pin,
             const char * angleDRIdent);
 
-  //! debugging function to validate ScaleMap input
-  bool inputValid() { return _mapValid; }
+  //! Returns stored input value
+  double getInput(void) { return _in; }
 
-  // debug
-  int getMapPair() { return _mapPair; }
+  //! Returns stored output value.
+  /*! This value is converted from _in via _map but does not have any
+   *  power-simulation effects added.
+   */
+  double getAngle(void) { return _out; }
 
-  double getAngle() { return _out; }
-  double getInput() { return _in; }
+  //! Returns computed servo angle
+  /*! This is the integer value fed to the servo through the Arduino
+   *  Servo object. It takes power-simulation effects into account.
+   */
+  int getServoAngle(void) {return _servoAngle; }
 
   //! Static function to initialise all SimServos
   static void setup(void);
@@ -79,11 +115,28 @@ public:
   //! Static function to update all SimLEDs
   static void update (bool updateOutput = true);
 
-  //! Sets state of simulated power availability
-  static void isPowered(bool hasPower = true){ _hasPower = hasPower; }
+  //! Default simulated power source for powered servos
+  static bool hasPower;
 
 private:
 
+  //! Position the needle will rest in if simulated power is unavailable
+  /*! Units are servo degrees (integer between 0 and 180). If set to -1,
+   *  the servo will just stop moving when power is removed.
+   */
+  int _restAngle;
+
+  //! Pointer to power source.
+  /*! If _needsPower is set, this will be checked during */
+  const bool* _powerSource;
+
+  //! Specifies if this SimServo needs simulated power available to move.
+  /*! If false, servo will either not move, or will move to defined
+   *  resting position, if power is not available.
+   */
+  bool _needsPower;
+
+  //! To clarify accessing indexes of _map.
   enum ScaleMapIndex {
     In,
     Out
@@ -92,11 +145,14 @@ private:
   //! Input value
   double _in;
 
-  //! Computed angle to send to servo
+  //! Result of passing _in through _map
   double _out;
 
+  //! _out with power simulation effects added, and converted to integer
+  int _servoAngle;
+
   //! Check ScaleMap input to see that input values are in increasing order
-  bool _validateMap();
+  bool _validateMap(void);
 
   //! If false, no _setup or _update occurs. Stores result of _validateMap().
   bool _mapValid;
@@ -109,20 +165,27 @@ private:
 
   //! Pointer to dataref-to-angle map
   const double (*_map)[2];
+
+  //! Number of input/output pairs in _map.
+  /*! Reliant on unmangled (map, sizeof(map)) arguments in constructor.*/
   unsigned int _mapPair;
 
-  bool _hasServo;
+  //! Ordinary Arduino Servo object, which actually moves the servo
   Servo _servo;
 
-  //! if true, will only move servo if isPowered was called with 'true'.
-  static bool _hasPower;
-
-  void _addToLinkedList(void);
+  //! Run setup routines on this class instance.
+  /*! This only consists of attaching the pin to the integrated Servo
+   *  object. */
   void _setup  (void) { _servo.attach(_pin); }
+
+  //! Run update routines on this class instance.
   void _update (bool updateOutput = true);
 
-  //! Number of this class created
-  static int _count;
+  // linked list:
+
+  //! Add this element to linked list of SimServos
+  /*! Note, this is not called when the ScaleMap input is invalid. */
+  void _addToLinkedList(void);
 
   //! Pointer to first instance of class in linked list
   static SimServo* _first;
@@ -134,32 +197,32 @@ private:
 
 
 
-bool SimServo::_validateMap() {
-  bool ok;
+//! Check we have at least two pairs and inputs are in increasing order
+bool SimServo::_validateMap(void) {
 
-  switch (_mapPair) {
-    case 0:
-      ok = false;
-      break;
-    case 1:
-      ok = true;
-      break;
-    default:
-      ok = true;
-      for(unsigned int i = 1; (i < _mapPair) && ok; ++i) {
-        if (_map[i][In] < _map[i-1][In])
-          ok = false;
-      } // for each pair
-      break;
-  } //switch
-  return ok;
+  if (_mapPair < 2) {
+    return false;
+  }
+
+  // each input must be greater than the previous input
+  for(unsigned int i = 1; i < _mapPair; ++i) {
+    if (_map[i][In] < _map[i-1][In]) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 
+
+//! Convert input to output via map, and write new servo-angle to servo
 void SimServo::_update(bool updateOutput) {
 
+  // assign dataref to stored 'input' value
   _in = _dr;
 
+  // if input off map, put output on edge of map
   if (_in <= _map[0][In]) {
     _out = _map[0][Out];
   }
@@ -168,23 +231,37 @@ void SimServo::_update(bool updateOutput) {
     _out = _map[_mapPair-1][Out];
   }
 
+  // if input within map, interpolate output
   for (int i = 1; i < _mapPair; ++i) {
     if (_in < _map[i][In]) {
 
-      double zzbuf = _in;
-      zzbuf -= _map[i-1][In];
-      zzbuf /= _map[i][In] - _map[i-1][In];
-      zzbuf *= _map[i][Out] - _map[i-1][Out];
-      zzbuf += _map[i-1][Out];
-      _out = zzbuf;
+      double buf = _in;
+      buf -= _map[i-1][In];
+      buf /= _map[i][In] - _map[i-1][In];
+      buf *= _map[i][Out] - _map[i-1][Out];
+      buf += _map[i-1][Out];
+      _out = buf;
 
       // exit for loop
       i = _mapPair;
     }
   }
 
-  if (updateOutput) {
-    _servo.write(_out);
+  // if we have power, or don't need power
+  if(*_powerSource || !_needsPower) {
+    // convert double to int to give to RC servo
+    _servoAngle = (int)(_out + 0.5);
+  } else {
+    // move to resting position if defined
+    if (_restAngle > -1) {
+      _servoAngle = _restAngle;
+    }
+    // otherwise servoAngle does not change
+  }
+
+  // use updateOutput as a final gate to write to servo
+  if (updateOutput && FlightSim.isEnabled()) {
+    _servo.write(_servoAngle);
   }
 
   return;
@@ -193,7 +270,7 @@ void SimServo::_update(bool updateOutput) {
 
 
 //! add this instance to a linked list of all SimServos
-void SimServo::_addToLinkedList() {
+void SimServo::_addToLinkedList(void) {
 
   _next = 0;
 
@@ -211,7 +288,7 @@ void SimServo::_addToLinkedList() {
 
 
 //! set up all instances of SimServo
-void SimServo::setup() {
+void SimServo::setup(void) {
   if (_first != 0) {
     SimServo* buf = _first;
     while (buf != 0) {
@@ -240,8 +317,8 @@ void SimServo::update( bool updateOutput) {
 
 
 // Initialise static data members
-int SimServo::_count        = 0;
 SimServo* SimServo::_first  = 0;
+bool SimServo::hasPower     = true;
 
 
 

@@ -76,6 +76,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li class="current"><a href="functions.html"><span>All</span></a></li>
       <li><a href="functions_func.html"><span>Functions</span></a></li>
+      <li><a href="functions_vars.html"><span>Variables</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -98,7 +99,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -111,6 +112,18 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div><ul>
 <li>enableTest()
 : <a class="el" href="class_sim_l_e_d.html#a0b22e299070331b80355ed233df58220">SimLED</a>
+</li>
+<li>getAngle()
+: <a class="el" href="class_sim_servo.html#aeb93aad3b6e9000afe17a23b6cd75156">SimServo</a>
+</li>
+<li>getInput()
+: <a class="el" href="class_sim_servo.html#a4102dc97b1bb7f3adc42c9db2e6efcc7">SimServo</a>
+</li>
+<li>getServoAngle()
+: <a class="el" href="class_sim_servo.html#ab10c610dc17857e337d97148c42e73fe">SimServo</a>
+</li>
+<li>hasPower
+: <a class="el" href="class_sim_servo.html#aab6c0305ce580ce8c08b77a9bff7f2ba">SimServo</a>
 </li>
 <li>isActive()
 : <a class="el" href="class_sim_l_e_d.html#a4de7e1a7bea30f0d85850ecdcc2da301">SimLED</a>
@@ -126,12 +139,17 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 <li>setup()
 : <a class="el" href="class_sim_l_e_d.html#a0748b6086d28eb43aed08eb35587cbb3">SimLED</a>
+, <a class="el" href="class_sim_servo.html#a64672cca1840b2f8dcdfcdffdc48ca41">SimServo</a>
 </li>
 <li>SimLED()
 : <a class="el" href="class_sim_l_e_d.html#a62e48b8e6081b867a1e8634bcb4a1a45">SimLED</a>
 </li>
+<li>SimServo()
+: <a class="el" href="class_sim_servo.html#afe67d286c7deacb3493fcc8e57b9d82c">SimServo</a>
+</li>
 <li>update()
 : <a class="el" href="class_sim_l_e_d.html#a851f8c94711a00cb821e217307cb994c">SimLED</a>
+, <a class="el" href="class_sim_servo.html#a5978e90a8ef105c4b68d64f2d7e5bbd1">SimServo</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -139,7 +157,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 7 2012 02:55:56 for SimObjects by
+    <li class="footer">Generated on Fri Nov 9 2012 01:15:09 for SimObjects by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

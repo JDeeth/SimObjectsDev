@@ -3,12 +3,14 @@ var NAVTREE =
   [ "SimObjects", "index.html", [
     [ "Introduction", "intro.html", null ],
     [ "Licence", "licence.html", null ],
+    [ "Todo List", "todo.html", null ],
     [ "Classes", null, [
       [ "Class List", "annotated.html", "annotated" ],
       [ "Class Index", "classes.html", null ],
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", null ],
-        [ "Functions", "functions_func.html", null ]
+        [ "Functions", "functions_func.html", null ],
+        [ "Variables", "functions_vars.html", null ]
       ] ]
     ] ],
     [ "Files", null, [
@@ -19,7 +21,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_sim_annc_dev_8h_source.html"
+"_l_c_d_output_8h_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
