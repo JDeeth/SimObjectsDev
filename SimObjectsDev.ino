@@ -49,6 +49,7 @@ void loop() {
   SimLED::update();
   testLights.update();
   
+  // Optional. Power defaults to 'available'.
   SimLED::isPowered(supplyVolts > voltsNeeded);
 
   SimLED::lightTest(testLights.read());
