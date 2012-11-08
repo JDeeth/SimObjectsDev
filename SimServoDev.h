@@ -29,11 +29,15 @@
 #ifndef SIMSERVODEV_H
 #define SIMSERVODEV_H
 
+
 #include "SimObjectsDev.h"
 #include <Servo.h>
 
+
 //! Input/output pairs for conversion
 typedef const double ScaleMap [][2];
+
+
 
 class SimServo {
 public:
@@ -48,7 +52,10 @@ public:
     _map = map;
     _mapPair =  sizeof_map / (2*sizeof(double));
 
-    _addToLinkedList();
+    _mapValid = _validateMap();
+
+    if(_mapValid)
+      _addToLinkedList();
   }
 
   //! Constructor where dataref is already the servo angle
@@ -57,6 +64,10 @@ public:
    */
   SimServo (const int &pin,
             const char * angleDRIdent);
+
+  //! debugging function to validate ScaleMap input
+  bool inputValid() { return _mapValid; }
+  int getMapPair() { return _mapPair; }
 
   //! Static function to initialise all SimServos
   static void setup(void);
@@ -68,6 +79,12 @@ public:
   static void isPowered(bool hasPower = true){ _hasPower = hasPower; }
 
 private:
+  //! Check ScaleMap input to see that input values are in increasing order
+  bool _validateMap();
+
+  //! If false, no _setup or _update occurs. Stores result of _validateMap().
+  bool _mapValid;
+
   //! Arduino pin number of servo.
   const unsigned short _pin;
 
@@ -76,17 +93,17 @@ private:
 
   //! Pointer to dataref-to-angle map
   const double (*_map)[2];
-  int _mapPair;
+  unsigned int _mapPair;
 
   bool _hasServo;
-  Servo _servo;
+  //Servo _servo;
 
   //! if true, will only move servo if isPowered was called with 'true'.
   static bool _hasPower;
 
   void _addToLinkedList(void);
-  void _setup  (void) { _servo.attach(_pin); }
-  void _update (bool updateOutput = true) {;}
+  void _setup  (void) { ;}//_servo.attach(_pin); }
+  void _update (bool updateOutput = true);
 
   //! Number of this class created
   static int _count;
@@ -98,6 +115,34 @@ private:
   SimServo* _next;
 
 };
+
+
+
+bool SimServo::_validateMap() {
+  bool ok;
+
+  switch (_mapPair) {
+    case 0:
+      ok = false;
+      break;
+    case 1:
+      ok = true;
+      break;
+    default:
+      ok = true;
+      for(unsigned int i = 1; (i < _mapPair) && ok; ++i) {
+        if (_map[i][0] < _map[i-1][0])
+          ok = false;
+      } // for each pair
+      break;
+  } //switch
+  return ok;
+}
+
+
+void SimServo::_update(bool updateOutput) {
+
+}
 
 
 
@@ -119,6 +164,7 @@ void SimServo::_addToLinkedList() {
 
 
 
+//! set up all instances of SimServo
 void SimServo::setup() {
   if (_first != 0) {
     SimServo* buf = _first;
@@ -131,6 +177,10 @@ void SimServo::setup() {
 
 
 
+//! update all instances of SimServo.
+/*! \param updateOutput If false, only updates SimServo state internally
+  *        and does not push new value to output.
+  */
 void SimServo::update( bool updateOutput) {
   if (_first != 0) {
     SimServo* buf = _first;
@@ -150,94 +200,3 @@ SimServo* SimServo::_first  = 0;
 
 
 #endif // SIMSERVODEV_H
-
-
-//SimLED::SimLED(const int  &ledPin,
-//           const char *ident,
-//           const int  &lowLimit,
-//           const int  &highLimit,
-//           const bool &invertLimits,
-//           const bool &enableTest)  :
-//_pin(ledPin),
-//lowLimitI_(lowLimit),
-//highLimitI_(highLimit),
-//inverse_(invertLimits),
-//allowTest_(enableTest)
-//{
-//type = SLInt;
-//_drI.assign((const _XpRefStr_ *) &ident[0]);
-//addToLinkedList();
-//}
-
-//SimLED::SimLED(const int    &ledPin,
-//           const char   *ident,
-//           const double &lowLimit,
-//           const double &highLimit,
-//           const bool   &invertLimits,
-//           const bool   &enableTest)  :
-//_pin(ledPin),
-//lowLimitF_(lowLimit),
-//highLimitF_(highLimit),
-//inverse_(invertLimits),
-//allowTest_(enableTest)
-//{
-//type = SLFloat;
-//_drF.assign((const _XpRefStr_ *) &ident[0]);
-//addToLinkedList();
-//}
-
-//void SimLED::addToLinkedList() {
-//next_ = 0;
-
-//if (count_++ == 0) {
-//    first_ = this;
-//} else {
-//    // Go through linked list and make last existing element point to us
-//    SimLED *a = first_;
-//    while (a->next_)
-//        a = a->next_;
-//    a->next_ = this;
-//}
-//}
-
-
-//// Determine whether this SimLED should be lit
-//void SimLED::update_(bool updateOutput) {
-
-//switch(type) {
-//case SLInt:
-//    active_ = (lowLimitI_ <= _drI && _drI <= highLimitI_);
-//    break;
-//case SLFloat:
-//    active_ = (lowLimitF_ <= _drF && _drF <= highLimitF_);
-//    break;
-//}
-
-//if(inverse_ == true)
-//    active_ = !active_;
-
-//lit_ = active_;
-
-//// apply lit_ filters:
-
-//// we are lit if bulb-test is active
-//if( (allowTest_ == true) && (testAll_ == true) )
-//    lit_ = true;
-
-//// we are not lit if the sim isn't running or no simulated power
-//if( (FlightSim.isEnabled() == false) || (hasPower_ == false) ) {
-//    lit_ = false;
-//}
-
-//// unless ordered otherwise, light or extinguish LED based on our lighting state
-//if (updateOutput)
-//    digitalWrite(_pin, lit_);
-//}
-
-
-//// Initialise static data members
-//int SimLED::count_      = 0;
-//SimLED* SimLED::first_  = 0;
-//bool SimLED::hasPower_  = true;
-//bool SimLED::testAll_   = false;
-

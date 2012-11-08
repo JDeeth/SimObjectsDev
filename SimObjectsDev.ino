@@ -6,7 +6,7 @@
 // SimServo
 ScaleMap flapGaugeMap = {
   {0.0, 120},
-  {34.0, 90},
+  {0.34, 90},
   {1.0, 45}
 };
 
@@ -64,7 +64,15 @@ void setupLCD() {
 
   analogWrite (BACKLIGHT, 128);
   lcd.begin (16, 2);
-  lcd.write ("Hello World");
+  if (flapGauge.inputValid())
+    lcd.print("Input valid!");
+  else
+    lcd.print("Input invalid!");
+  lcd.setCursor(0, 1);
+  lcd.print(flapGauge.getMapPair());
+  lcd.print(" pairs input");
+
+
 }
 
 // Power available
