@@ -1,5 +1,3 @@
-//! This file contains #includes and #defines common to all SimObjects
-
 #ifndef SIMOBJECTSDEV_H
 #define SIMOBJECTSDEV_H
 
@@ -49,5 +47,10 @@
  * incorporated into other projects.
  */
 
+
+
+class SimObject {
+
+};
 
 #endif

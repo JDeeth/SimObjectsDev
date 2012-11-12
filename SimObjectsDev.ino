@@ -1,7 +1,8 @@
-// not sure why I can't include these from inside my own headers.
+// Arduino IDE prevents headers being included from within other headers
 #include "Servo.h"
 #include "LiquidCrystalFast.h"
 
+#include "SimObjectsDev.h"
 #include "SimLEDDev.h"
 #include "SimServoDev.h"
 #include "Bounce.h"
@@ -34,7 +35,7 @@ SimServo flapGauge(11,
                    sizeof(flapGaugeMap));
 
 
-// SimServo VSI gauge
+//// SimServo VSI gauge
 
 ScaleMap vsiMap = {
   {-6000, 153},
@@ -74,45 +75,45 @@ SimServo vsi (10,
 
 
 
-ScaleMap fooMap = {
-  {-2.4, 24},
-  {20,  103},
-  {67,   75},   // This is OK. Output values can increase, decrease, and
-                // change direction like this.
+//ScaleMap fooMap = {
+//  {-2.4, 24},
+//  {20,  103},
+//  {67,   75},   // This is OK. Output values can increase, decrease, and
+//                // change direction like this.
 
-  {50,   64}    // NOT OK - input values MUST be increasing order.
-                // This ScaleMap will be considered invalid and the
-                // SimServo using it will be inactive.
-};
+//  {50,   64}    // NOT OK - input values MUST be increasing order.
+//                // This ScaleMap will be considered invalid and the
+//                // SimServo using it will be inactive.
+//};
 
-DataRefIdent fooIdent[] = "sim/cockpit/ipso/lorem";
-// non-existant dataref identifier will result in input always being 0.
+//DataRefIdent fooIdent[] = "sim/cockpit/ipso/lorem";
+//// non-existant dataref identifier will result in input always being 0.
 
-// We'll use fooPower as a sim-power-available flag for the next servo.
-bool fooPower = true;
+//// We'll use fooPower as a sim-power-available flag for the next servo.
+//bool fooPower = true;
 
-SimServo foo(9,
-             fooIdent,
-             fooMap,
-             sizeof(vsiMap), // ERROR! vsiMap is not fooMap!
+//SimServo foo(9,
+//             fooIdent,
+//             fooMap,
+//             sizeof(vsiMap), // ERROR! vsiMap is not fooMap!
 
-             15,             // Our resting position is 15 degrees, so
-                             // the servo will move to 15 degrees when
-                             // fooPower is false. Except this SimServo
-                             // has been improperly set up, so in fact
-                             // it will never move at all.
+//             15,             // Our resting position is 15 degrees, so
+//                             // the servo will move to 15 degrees when
+//                             // fooPower is false. Except this SimServo
+//                             // has been improperly set up, so in fact
+//                             // it will never move at all.
 
-             &fooPower);     // We have set fooPower as the sim-power-
-                             // available flag for this SimServo. If
-                             // fooPower is true, we have power,
-                             // otherwise we don't.
+//             &fooPower);     // We have set fooPower as the sim-power-
+//                             // available flag for this SimServo. If
+//                             // fooPower is true, we have power,
+//                             // otherwise we don't.
 
 
-ScaleMap bazMap = {
-  {0, 90}
-};
-// Error - we need at least 2 pairs of data in ScaleMap. This map would
-// keep the SimServo inactive.
+//ScaleMap bazMap = {
+//  {0, 90}
+//};
+//// Error - we need at least 2 pairs of data in ScaleMap. This map would
+//// keep the SimServo inactive.
 
 
 

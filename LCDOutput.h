@@ -39,21 +39,28 @@ void setupLCD(void) {
 
 
 void updateLCD(void) {
-  if (lcdTimer > lcdPeriod) {
-    lcdTimer = 0;
+  if (FlightSim.isEnabled()) {
+    analogWrite(BACKLIGHT, 128);
+    if (lcdTimer > lcdPeriod) {
+      lcdTimer = 0;
 
+      lcd.clear();
+
+      lcd.setCursor(0, 0);
+      lcd.print (flapGauge.getInput());
+      lcd.setCursor(0, 1);
+      lcd.print (flapGauge.getServoAngle());
+
+      lcd.setCursor(6, 0);
+      lcd.print (vsi.getInput());
+      lcd.setCursor (6, 1);
+      lcd.print (vsi.getServoAngle());
+    }
+  } else { //flightsim
+    analogWrite(BACKLIGHT, 0);
     lcd.clear();
-
-    lcd.setCursor(0, 0);
-    lcd.print (flapGauge.getInput());
-    lcd.setCursor(0, 1);
-    lcd.print (flapGauge.getServoAngle());
-
-    lcd.setCursor(6, 0);
-    lcd.print (vsi.getInput());
-    lcd.setCursor (6, 1);
-    lcd.print (vsi.getServoAngle());
   }
+
 }
 
 

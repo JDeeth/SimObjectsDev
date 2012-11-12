@@ -127,7 +127,7 @@ private:
   int _restAngle;
 
   //! Pointer to power source.
-  /*! If _needsPower is set, this will be checked during */
+  /*! If _needsPower is set, this will be checked during update.*/
   const bool* _powerSource;
 
   //! Specifies if this SimServo needs simulated power available to move.
@@ -157,13 +157,13 @@ private:
   //! If false, no _setup or _update occurs. Stores result of _validateMap().
   bool _mapValid;
 
-  //! Arduino pin number of servo.
+  //! Number of Arduino pin connected to servo.
   const unsigned short _pin;
 
   //! Input dataref
   FlightSimFloat _dr;
 
-  //! Pointer to dataref-to-angle map
+  //! Pointer to input-to-output conversion map
   const double (*_map)[2];
 
   //! Number of input/output pairs in _map.

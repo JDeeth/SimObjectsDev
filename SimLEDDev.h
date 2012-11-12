@@ -81,19 +81,19 @@ public:
   static void update (bool updateOutput = true);
 
   /// True if input conditions would cause this LED to light
-  bool isActive(void) { return active_; }
+  bool isActive(void) { return _active; }
 
   /// True if this LED should light, applying filters (power, test etc)
-  bool isLit(void)    { return lit_ ; }
+  bool isLit(void)    { return _lit ; }
 
   /// Sets state of simulated power availability
-  static void isPowered(bool hasPower = true){ hasPower_ = hasPower; }
+  static void isPowered(bool hasPower = true){ _hasPower = hasPower; }
 
   /// Enable/disable bulb test mode
-  static void lightTest(bool lightAll)  {testAll_ = lightAll;}
+  static void lightTest(bool lightAll)  {_testAll = lightAll;}
 
   /// Enable/disable this SimLED's participation in lightTests
-  void enableTest (bool allowTest)      {allowTest_ = allowTest;}
+  void enableTest (bool allowTest)      {_allowTest = allowTest;}
 
 private:
   /// Possible types of SimLED
@@ -110,36 +110,33 @@ private:
   int _pin;
 
   /// Inverts active state if true.
-  bool inverse_;
+  bool _inverse;
 
   FlightSimInteger _drI;
-  int lowLimitI_;
-  int highLimitI_;
+  int _lowLimitI;
+  int _highLimitI;
 
   FlightSimFloat _drF;
-  double lowLimitF_;
-  double highLimitF_;
+  double _lowLimitF;
+  double _highLimitF;
 
-  bool active_;
-  bool lit_;
+  bool _active;
+  bool _lit;
 
   void addToLinkedList(void);
   void setup_ (void) {pinMode(_pin, OUTPUT);}
   void update_(bool updateOutput = true);
 
-  bool allowTest_;
+  bool _allowTest;
 
-  static bool hasPower_;
-  static bool testAll_;
-
-  /// Number of SimLEDs created
-  static int count_;
+  static bool _hasPower;
+  static bool _testAll;
 
   /// Pointer to first SimLED in linked list
-  static SimLED* first_;
+  static SimLED* _first;
 
   /// Pointer to next SimLED in linked list. ==0 if we are last element
-  SimLED* next_;
+  SimLED* _next;
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -151,10 +148,10 @@ SimLED::SimLED(const int  &ledPin,
                const bool &invertLimits,
                const bool &enableTest)  :
   _pin(ledPin),
-  lowLimitI_(lowLimit),
-  highLimitI_(highLimit),
-  inverse_(invertLimits),
-  allowTest_(enableTest)
+  _lowLimitI(lowLimit),
+  _highLimitI(highLimit),
+  _inverse(invertLimits),
+  _allowTest(enableTest)
 {
   type = SLInt;
   _drI.assign((const _XpRefStr_ *) &ident[0]);
@@ -168,10 +165,10 @@ SimLED::SimLED(const int    &ledPin,
                const bool   &invertLimits,
                const bool   &enableTest)  :
   _pin(ledPin),
-  lowLimitF_(lowLimit),
-  highLimitF_(highLimit),
-  inverse_(invertLimits),
-  allowTest_(enableTest)
+  _lowLimitF(lowLimit),
+  _highLimitF(highLimit),
+  _inverse(invertLimits),
+  _allowTest(enableTest)
 {
   type = SLFloat;
   _drF.assign((const _XpRefStr_ *) &ident[0]);
@@ -179,36 +176,36 @@ SimLED::SimLED(const int    &ledPin,
 }
 
 void SimLED::addToLinkedList() {
-  next_ = 0;
+  _next = 0;
 
-  if (count_++ == 0) {
-    first_ = this;
+  if (_first == 0) {
+    _first = this;
   } else {
     // Go through linked list and make last existing element point to us
-    SimLED *a = first_;
-    while (a->next_)
-      a = a->next_;
-    a->next_ = this;
+    SimLED *a = _first;
+    while (a->_next)
+      a = a->_next;
+    a->_next = this;
   }
 }
 
 void SimLED::setup() {
-  if (count_ > 0) {
-    SimLED* buf = first_;
+  if (_first != 0) {        //!< if at least one SimLED is instantiated
+    SimLED* buf = _first;
     while (buf != 0) {
       buf->setup_();
-      buf = buf->next_;
+      buf = buf->_next;
     }
   }
 }
 
 void SimLED::update( bool updateOutput) {
 
-  if (count_ > 0) {
-    SimLED* buf = first_;
+  if (_first != 0) {        //!< if at least one SimLED is instantiated
+    SimLED* buf = _first;
     while (buf != 0) {
       buf->update_(updateOutput);
-      buf = buf->next_;
+      buf = buf->_next;
     }
   }
 }
@@ -218,39 +215,38 @@ void SimLED::update_(bool updateOutput) {
 
   switch(type) {
     case SLInt:
-      active_ = (lowLimitI_ <= _drI && _drI <= highLimitI_);
+      _active = (_lowLimitI <= _drI && _drI <= _highLimitI);
       break;
     case SLFloat:
-      active_ = (lowLimitF_ <= _drF && _drF <= highLimitF_);
+      _active = (_lowLimitF <= _drF && _drF <= _highLimitF);
       break;
   }
 
-  if(inverse_ == true)
-    active_ = !active_;
+  if(_inverse == true)
+    _active = !_active;
 
-  lit_ = active_;
+  _lit = _active;
 
   // apply lit_ filters:
 
   // we are lit if bulb-test is active
-  if( (allowTest_ == true) && (testAll_ == true) )
-    lit_ = true;
+  if( (_allowTest == true) && (_testAll == true) )
+    _lit = true;
 
   // we are not lit if the sim isn't running or no simulated power
-  if( (FlightSim.isEnabled() == false) || (hasPower_ == false) ) {
-    lit_ = false;
+  if( (FlightSim.isEnabled() == false) || (_hasPower == false) ) {
+    _lit = false;
   }
 
   // unless ordered otherwise, light or extinguish LED based on our lighting state
   if (updateOutput)
-    digitalWrite(_pin, lit_);
+    digitalWrite(_pin, _lit);
 }
 
 
 // Initialise static data members
-int SimLED::count_      = 0;
-SimLED* SimLED::first_  = 0;
-bool SimLED::hasPower_  = true;
-bool SimLED::testAll_   = false;
+SimLED* SimLED::_first  = 0;
+bool SimLED::_hasPower  = true;
+bool SimLED::_testAll   = false;
 
 #endif // SIMLEDDEV_H
