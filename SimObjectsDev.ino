@@ -1,8 +1,9 @@
+#include "usb_api.h"
+
 // Arduino IDE prevents headers being included from within other headers
 #include "Servo.h"
 #include "LiquidCrystalFast.h"
 
-#include "SimObjectsDev.h"
 #include "SimLEDDev.h"
 #include "SimServoDev.h"
 #include "Bounce.h"
@@ -116,7 +117,6 @@ SimServo vsi (10,
 //// keep the SimServo inactive.
 
 
-
 // Various SimLEDs
 
 // LED goes on if transponder light is on.
@@ -143,7 +143,6 @@ DataRefIdent ident6[] = "sim/flightmodel2/gear/deploy_ratio[2]";
 SimLED gearPosRight(17, ident6, 1.0, 999.0);
 
 
-
 // Ordinary Teensyduino code to give us a bulb-test input
 const int testButtonPin = 45;
 Bounce testLights = Bounce (testButtonPin, 5);
@@ -161,7 +160,6 @@ const float voltsNeeded = 10.0;
 
 void setup() {
   SimObject::setup();
-  //SimServo::setup();
 
   supplyVolts = XPlaneRef("sim/cockpit2/electrical/bus_volts[0]");
 
@@ -172,26 +170,13 @@ void setup() {
 
 void loop() {
   FlightSim.update();
-
   SimObject::update();
-  //SimServo::update();
 
-  // SimLED bulb test mode
   testLights.update();
 
   SimLED::lightTest(testLights.read());
 
-  // Optional simulated power availability. Defaults to 'available',
-  // so these lines can be omitted if you don't need it.
-  SimLED::isPowered(supplyVolts > voltsNeeded);
-  SimServo::hasPower = (supplyVolts > voltsNeeded);
-  // Note, at the moment (because I am reinventing the wheel while
-  // procrastinating about learning about class inheritance), SimLED and
-  // SimLED have different ways to specify whether the default power
-  // supply is available. SimLED uses a static member function; SimServo
-  // uses a static public bool. SimServo is consistent with the method I
-  // chose for individual servo 'has-power' flags so I'll probably
-  // SimLED to use it too.
+  SimObject::hasPower = (supplyVolts > voltsNeeded);
 
   updateLCD(); // You can ignore this too.
 }

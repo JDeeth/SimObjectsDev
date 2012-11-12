@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>SimObjects: Licence</title>
+<title>SimObjects: Member List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -44,8 +44,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li class="current"><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -65,6 +65,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
+    </ul>
+  </div>
 </div><!-- top -->
 <div id="side-nav" class="ui-resizable side-nav-resizable">
   <div id="nav-tree">
@@ -77,7 +85,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){initNavTree('licence.html','');});
+$(document).ready(function(){initNavTree('class_sim_object.html','');});
 </script>
 <div id="doc-content">
 <!-- window showing the filter options -->
@@ -96,15 +104,23 @@ $(document).ready(function(){initNavTree('licence.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">Licence </div>  </div>
+<div class="title">SimObject Member List</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Copyright 2012 Jack Deeth Contact: <a href="#" onclick="location.href='mai'+'lto:'+'sim'+'ul'+'ati'+'on'+'ele'+'ct'+'ron'+'ic'+'s@g'+'ma'+'il.'+'co'+'m'; return false;">simul<span style="display: none;">.nosp@m.</span>atio<span style="display: none;">.nosp@m.</span>nelec<span style="display: none;">.nosp@m.</span>tron<span style="display: none;">.nosp@m.</span>ics@g<span style="display: none;">.nosp@m.</span>mail<span style="display: none;">.nosp@m.</span>.com</a></p>
-<p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.</p>
-<p>You should have received a copy of the GNU Lesser General Public License along with this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
-<p>I would appreciate, but not insist, on attribution if this code is incorporated into other projects. </p>
-</div></div><!-- contents -->
+
+<p>This is the complete list of members for <a class="el" href="class_sim_object.html">SimObject</a>, including all inherited members.</p>
+<table class="directory">
+  <tr bgcolor="#f0f0f0"class="even"><td class="entry"><b>_addToLinkedList</b>(void) (defined in <a class="el" href="class_sim_object.html">SimObject</a>)</td><td class="entry"><a class="el" href="class_sim_object.html">SimObject</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_sim_object.html#a73f60285f7d68e3eef47922767c33019">_needsPower</a></td><td class="entry"><a class="el" href="class_sim_object.html">SimObject</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_sim_object.html#a9f16f8e1a3599b3b2a8444c2c53af896">_powerSource</a></td><td class="entry"><a class="el" href="class_sim_object.html">SimObject</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>_setup</b>(void)=0 (defined in <a class="el" href="class_sim_object.html">SimObject</a>)</td><td class="entry"><a class="el" href="class_sim_object.html">SimObject</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></td></tr>
+  <tr bgcolor="#f0f0f0"class="even"><td class="entry"><b>_update</b>(bool updateOutput=true)=0 (defined in <a class="el" href="class_sim_object.html">SimObject</a>)</td><td class="entry"><a class="el" href="class_sim_object.html">SimObject</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_sim_object.html#aba41fdf8675572416082d097064a7377">hasPower</a></td><td class="entry"><a class="el" href="class_sim_object.html">SimObject</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_sim_object.html#a05790aa090d46c08926c9d477ef684e4">setPowerSource</a>(const bool *powerSource)</td><td class="entry"><a class="el" href="class_sim_object.html">SimObject</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>setup</b>(void) (defined in <a class="el" href="class_sim_object.html">SimObject</a>)</td><td class="entry"><a class="el" href="class_sim_object.html">SimObject</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr bgcolor="#f0f0f0"class="even"><td class="entry"><b>SimObject</b>(const bool *powerSource) (defined in <a class="el" href="class_sim_object.html">SimObject</a>)</td><td class="entry"><a class="el" href="class_sim_object.html">SimObject</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>update</b>(bool updateOutput=true) (defined in <a class="el" href="class_sim_object.html">SimObject</a>)</td><td class="entry"><a class="el" href="class_sim_object.html">SimObject</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+</table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

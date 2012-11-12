@@ -32,7 +32,7 @@
 
 //! High-level dataref-to-LED linking class
 /*! Incorporating bulb-test and power-available features.*/
-class SimLED : protected SimObject {
+class SimLED : public SimObject {
 public:
   //! Integer constructor
   /*! Incorporating upper and lower limits.
@@ -51,7 +51,9 @@ public:
          const int    &lowLimit     = 1,
          const int    &highLimit    = 32000,
          const bool   &invertLimits = false,
-         const bool   &enableTest   = true);
+         const bool   &enableTest   = true,
+         const bool   *hasPowerFlag = &SimObject::hasPower
+      );
 
   //! Floating-point constructor
   /*! Incorporating upper and lower limits.
@@ -70,26 +72,15 @@ public:
          const double &lowLimit,
          const double &highLimit,
          const bool   &invertLimits = false,
-         const bool   &enableTest   = true);
-
-//  //! Static function to initialise all SimLEDs
-//  static void setup(void);
-
-  //! Static function to update all SimLEDs
-  /*!
-   *  \param updateOutput If false, will update the state of each SimLED
-   * but not change the lit state.
-   */
-  //static void update (bool updateOutput = true);
+         const bool   &enableTest   = true,
+         const bool   *hasPowerFlag = &SimObject::hasPower
+      );
 
   /// True if input conditions would cause this LED to light
   bool isActive(void) { return _active; }
 
   /// True if this LED should light, applying filters (power, test etc)
   bool isLit(void)    { return _lit ; }
-
-  /// Sets state of simulated power availability
-  static void isPowered(bool hasPower = true){ _hasPower = hasPower; }
 
   /// Enable/disable bulb test mode
   static void lightTest(bool lightAll)  {_testAll = lightAll;}
@@ -131,14 +122,8 @@ private:
 
   bool _allowTest;
 
-  static bool _hasPower;
   static bool _testAll;
 
-  ///// Pointer to first SimLED in linked list
-  //static SimLED* _first;
-
-  ///// Pointer to next SimLED in linked list. ==0 if we are last element
-  //SimLED* _next;
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -148,7 +133,10 @@ SimLED::SimLED(const int  &ledPin,
                const int  &lowLimit,
                const int  &highLimit,
                const bool &invertLimits,
-               const bool &enableTest)  :
+               const bool &enableTest,
+               const bool *hasPowerFlag
+               ) :
+  SimObject(hasPowerFlag),
   _pin(ledPin),
   _lowLimitI(lowLimit),
   _highLimitI(highLimit),
@@ -165,7 +153,10 @@ SimLED::SimLED(const int    &ledPin,
                const double &lowLimit,
                const double &highLimit,
                const bool   &invertLimits,
-               const bool   &enableTest)  :
+               const bool   &enableTest,
+               const bool   *hasPowerFlag
+               ) :
+  SimObject(hasPowerFlag),
   _pin(ledPin),
   _lowLimitF(lowLimit),
   _highLimitF(highLimit),
@@ -176,6 +167,7 @@ SimLED::SimLED(const int    &ledPin,
   _drF.assign((const _XpRefStr_ *) &ident[0]);
   _addToLinkedList();
 }
+
 
 
 
@@ -203,7 +195,7 @@ void SimLED::_update(bool updateOutput) {
     _lit = true;
 
   // we are not lit if the sim isn't running or no simulated power
-  if( (FlightSim.isEnabled() == false) || (_hasPower == false) ) {
+  if( (FlightSim.isEnabled() == false) || (hasPower == false) ) {
     _lit = false;
   }
 
@@ -214,7 +206,6 @@ void SimLED::_update(bool updateOutput) {
 
 
 // Initialise static data members
-bool SimLED::_hasPower  = true;
 bool SimLED::_testAll   = false;
 
 #endif // SIMLEDDEV_H

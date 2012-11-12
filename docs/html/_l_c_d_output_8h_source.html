@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('_l_c_d_output_8h_source.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">LCDOutput.h</div>  </div>
+<div class="title">C:/Dev/xteensy/SimObjectsDev/LCDOutput.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// I don&#39;t have any servos, so I&#39;m using an LCD to display the results</span></div>
@@ -145,32 +145,39 @@ $(document).ready(function(){initNavTree('_l_c_d_output_8h_source.html','');});
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">void</span> updateLCD(<span class="keywordtype">void</span>) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordflow">if</span> (lcdTimer &gt; lcdPeriod) {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    lcdTimer = 0;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    lcd.clear();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordflow">if</span> (FlightSim.isEnabled()) {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    analogWrite(BACKLIGHT, 128);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">if</span> (lcdTimer &gt; lcdPeriod) {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      lcdTimer = 0;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    lcd.setCursor(0, 0);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    lcd.print (flapGauge.getInput());</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    lcd.setCursor(0, 1);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    lcd.print (flapGauge.getServoAngle());</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    lcd.setCursor(6, 0);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    lcd.print (vsi.getInput());</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    lcd.setCursor (6, 1);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    lcd.print (vsi.getServoAngle());</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      lcd.clear();</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      lcd.setCursor(0, 0);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      lcd.print (flapGauge.getInput());</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      lcd.setCursor(0, 1);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      lcd.print (flapGauge.getServoAngle());</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      lcd.setCursor(6, 0);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      lcd.print (vsi.getInput());</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      lcd.setCursor (6, 1);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      lcd.print (vsi.getServoAngle());</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    }</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  } <span class="keywordflow">else</span> { <span class="comment">//flightsim</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    analogWrite(BACKLIGHT, 0);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    lcd.clear();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c7a15cb74fa72b419f10875903789323.html">Dev</a></li><li class="navelem"><a class="el" href="dir_ca3df69112035dcb6e7b6279e3c847de.html">xteensy</a></li><li class="navelem"><a class="el" href="dir_7bde0d9ea3d8389d9b9eb89631299b3f.html">SimObjectsDev</a></li><li class="navelem"><b>LCDOutput.h</b></li>
-    <li class="footer">Generated on Fri Nov 9 2012 01:15:09 for SimObjects by
+    <li class="navelem"><b>LCDOutput.h</b></li>
+    <li class="footer">Generated on Mon Nov 12 2012 23:07:42 for SimObjects by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

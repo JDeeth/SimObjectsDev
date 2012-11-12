@@ -51,27 +51,54 @@
 
 class SimObject {
 public:
+  SimObject(const bool *powerSource) {
+    setPowerSource(powerSource);
+  }
+
+
+  //! \param powerSource Pointer to bool which defines whether simulated
+  //!        power is available to this SimObject
+  void setPowerSource (const bool * powerSource) {
+    _powerSource = powerSource;
+
+    if (powerSource == 0)
+      _needsPower = false;
+    else
+      _needsPower = true;
+  }
+
+
   static void setup(void);
   static void update (bool updateOutput = true);
 
+  //! Default simulated power source
+  static bool hasPower;
+
 protected:
   virtual void _addToLinkedList(void);
-  virtual void _setup (void);
-  virtual void _update(bool updateOutput = true);
+  virtual void _setup (void) =0;
+  virtual void _update(bool updateOutput = true) =0;
+
+  //! Specifies if this object needs simulated power available to operate.
+  bool _needsPower;
+
+  //! Pointer to power source.
+  /*! If _needsPower is set, this will be checked during update.*/
+  const bool* _powerSource;
 
 private:
   static SimObject* _first;
   SimObject* _next;
+
 };
 
 
-
+bool SimObject::hasPower = true;
 SimObject* SimObject::_first  = 0;
 
 
-
 void SimObject::setup() {
-  if (_first != 0) {      //!< if at least one SimObject is instantiated
+  if (_first != 0) {      // if at least one SimObject is instantiated
     SimObject* buf = _first;
     while (buf != 0) {
       buf->_setup();
@@ -83,8 +110,7 @@ void SimObject::setup() {
 
 
 void SimObject::update( bool updateOutput) {
-
-  if (_first != 0) {      //!< if at least one SimObject is instantiated
+  if (_first != 0) {      // if at least one SimObject is instantiated
     SimObject* buf = _first;
     while (buf != 0) {
       buf->_update(updateOutput);
@@ -98,7 +124,7 @@ void SimObject::update( bool updateOutput) {
 void SimObject::_addToLinkedList(void) {
   _next = 0;
 
-  if (_first == 0) {  //!< then this must be the first object
+  if (_first == 0) {  // then this must be the first object
     _first = this;
   } else {
     // Go through linked list and make last existing element point to us
@@ -108,5 +134,6 @@ void SimObject::_addToLinkedList(void) {
     a->_next = this;
   }
 }
+
 
 #endif
