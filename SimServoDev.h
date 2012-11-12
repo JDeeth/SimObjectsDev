@@ -37,7 +37,7 @@
 //! Input/output pairs for conversion
 typedef const double ScaleMap [][2];
 
-class SimServo {
+class SimServo : protected SimObject {
 public:
   //! Constructor for when we need to convert the dataref into an angle.
   /*! The SimServo will use a ScaleMap to convert the input dataref into
@@ -109,11 +109,11 @@ public:
    */
   int getServoAngle(void) {return _servoAngle; }
 
-  //! Static function to initialise all SimServos
-  static void setup(void);
+//  //! Static function to initialise all SimServos
+//  static void setup(void);
 
-  //! Static function to update all SimLEDs
-  static void update (bool updateOutput = true);
+//  //! Static function to update all SimLEDs
+//  static void update (bool updateOutput = true);
 
   //! Default simulated power source for powered servos
   static bool hasPower;
@@ -183,15 +183,15 @@ private:
 
   // linked list:
 
-  //! Add this element to linked list of SimServos
-  /*! Note, this is not called when the ScaleMap input is invalid. */
-  void _addToLinkedList(void);
+//  //! Add this element to linked list of SimServos
+//  /*! Note, this is not called when the ScaleMap input is invalid. */
+//  void _addToLinkedList(void);
 
-  //! Pointer to first instance of class in linked list
-  static SimServo* _first;
+//  //! Pointer to first instance of class in linked list
+//  static SimServo* _first;
 
-  //! Pointer to next instance in linked list. ==0 if we are last element
-  SimServo* _next;
+//  //! Pointer to next instance in linked list. ==0 if we are last element
+//  SimServo* _next;
 
 };
 
@@ -269,55 +269,55 @@ void SimServo::_update(bool updateOutput) {
 
 
 
-//! add this instance to a linked list of all SimServos
-void SimServo::_addToLinkedList(void) {
+////! add this instance to a linked list of all SimServos
+//void SimServo::_addToLinkedList(void) {
 
-  _next = 0;
+//  _next = 0;
 
-  if (_first == 0) {
-    _first = this;
-  } else {
-    // Go through linked list and make last existing element point to us
-    SimServo *a = _first;
-    while (a->_next)
-      a = a->_next;
-    a->_next = this;
-  }
-}
-
-
-
-//! set up all instances of SimServo
-void SimServo::setup(void) {
-  if (_first != 0) {
-    SimServo* buf = _first;
-    while (buf != 0) {
-      buf->_setup();
-      buf = buf->_next;
-    }
-  }
-}
+//  if (_first == 0) {
+//    _first = this;
+//  } else {
+//    // Go through linked list and make last existing element point to us
+//    SimServo *a = _first;
+//    while (a->_next)
+//      a = a->_next;
+//    a->_next = this;
+//  }
+//}
 
 
 
-//! update all instances of SimServo.
-/*! \param updateOutput If false, only updates SimServo state internally
-  *        and does not push new value to output.
-  */
-void SimServo::update( bool updateOutput) {
-  if (_first != 0) {
-    SimServo* buf = _first;
-    while (buf != 0) {
-      buf->_update(updateOutput);
-      buf = buf->_next;
-    }
-  }
-}
+////! set up all instances of SimServo
+//void SimServo::setup(void) {
+//  if (_first != 0) {
+//    SimServo* buf = _first;
+//    while (buf != 0) {
+//      buf->_setup();
+//      buf = buf->_next;
+//    }
+//  }
+//}
+
+
+
+////! update all instances of SimServo.
+///*! \param updateOutput If false, only updates SimServo state internally
+//  *        and does not push new value to output.
+//  */
+//void SimServo::update( bool updateOutput) {
+//  if (_first != 0) {
+//    SimServo* buf = _first;
+//    while (buf != 0) {
+//      buf->_update(updateOutput);
+//      buf = buf->_next;
+//    }
+//  }
+//}
 
 
 
 // Initialise static data members
-SimServo* SimServo::_first  = 0;
+//SimServo* SimServo::_first  = 0;
 bool SimServo::hasPower     = true;
 
 

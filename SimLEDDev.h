@@ -32,7 +32,7 @@
 
 //! High-level dataref-to-LED linking class
 /*! Incorporating bulb-test and power-available features.*/
-class SimLED : public SimObject {
+class SimLED : protected SimObject {
 public:
   //! Integer constructor
   /*! Incorporating upper and lower limits.

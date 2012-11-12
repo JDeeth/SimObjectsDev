@@ -55,7 +55,7 @@ public:
   static void update (bool updateOutput = true);
 
 protected:
-  virtual void _addToLinkedList(void); //why does this not work when Protected?
+  virtual void _addToLinkedList(void);
   virtual void _setup (void);
   virtual void _update(bool updateOutput = true);
 
