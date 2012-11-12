@@ -50,7 +50,63 @@
 
 
 class SimObject {
+public:
+  static void setup(void);
+  static void update (bool updateOutput = true);
 
+protected:
+  virtual void _addToLinkedList(void); //why does this not work when Protected?
+  virtual void _setup (void);
+  virtual void _update(bool updateOutput = true);
+
+private:
+  static SimObject* _first;
+  SimObject* _next;
 };
+
+
+
+SimObject* SimObject::_first  = 0;
+
+
+
+void SimObject::setup() {
+  if (_first != 0) {      //!< if at least one SimObject is instantiated
+    SimObject* buf = _first;
+    while (buf != 0) {
+      buf->_setup();
+      buf = buf->_next;
+    }
+  }
+}
+
+
+
+void SimObject::update( bool updateOutput) {
+
+  if (_first != 0) {      //!< if at least one SimObject is instantiated
+    SimObject* buf = _first;
+    while (buf != 0) {
+      buf->_update(updateOutput);
+      buf = buf->_next;
+    }
+  }
+}
+
+
+
+void SimObject::_addToLinkedList(void) {
+  _next = 0;
+
+  if (_first == 0) {  //!< then this must be the first object
+    _first = this;
+  } else {
+    // Go through linked list and make last existing element point to us
+    SimObject *a = _first;
+    while (a->_next)
+      a = a->_next;
+    a->_next = this;
+  }
+}
 
 #endif

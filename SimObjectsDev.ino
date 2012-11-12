@@ -160,7 +160,7 @@ const float voltsNeeded = 10.0;
 
 
 void setup() {
-  SimLED::setup();
+  SimObject::setup();
   SimServo::setup();
 
   supplyVolts = XPlaneRef("sim/cockpit2/electrical/bus_volts[0]");
@@ -173,7 +173,7 @@ void setup() {
 void loop() {
   FlightSim.update();
 
-  SimLED::update();
+  SimObject::update();
   SimServo::update();
 
   // SimLED bulb test mode

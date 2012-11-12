@@ -28,9 +28,11 @@
 
 #include "SimObjectsDev.h"
 
+
+
 //! High-level dataref-to-LED linking class
 /*! Incorporating bulb-test and power-available features.*/
-class SimLED {
+class SimLED : public SimObject {
 public:
   //! Integer constructor
   /*! Incorporating upper and lower limits.
@@ -70,15 +72,15 @@ public:
          const bool   &invertLimits = false,
          const bool   &enableTest   = true);
 
-  //! Static function to initialise all SimLEDs
-  static void setup(void);
+//  //! Static function to initialise all SimLEDs
+//  static void setup(void);
 
   //! Static function to update all SimLEDs
   /*!
-          \param updateOutput If false, will update the state of each SimLED
-          but not change the lit state.
-          */
-  static void update (bool updateOutput = true);
+   *  \param updateOutput If false, will update the state of each SimLED
+   * but not change the lit state.
+   */
+  //static void update (bool updateOutput = true);
 
   /// True if input conditions would cause this LED to light
   bool isActive(void) { return _active; }
@@ -123,20 +125,20 @@ private:
   bool _active;
   bool _lit;
 
-  void addToLinkedList(void);
-  void setup_ (void) {pinMode(_pin, OUTPUT);}
-  void update_(bool updateOutput = true);
+  //void _addToLinkedList(void);
+  void _setup (void) {pinMode(_pin, OUTPUT);}
+  void _update(bool updateOutput = true);
 
   bool _allowTest;
 
   static bool _hasPower;
   static bool _testAll;
 
-  /// Pointer to first SimLED in linked list
-  static SimLED* _first;
+  ///// Pointer to first SimLED in linked list
+  //static SimLED* _first;
 
-  /// Pointer to next SimLED in linked list. ==0 if we are last element
-  SimLED* _next;
+  ///// Pointer to next SimLED in linked list. ==0 if we are last element
+  //SimLED* _next;
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -155,7 +157,7 @@ SimLED::SimLED(const int  &ledPin,
 {
   type = SLInt;
   _drI.assign((const _XpRefStr_ *) &ident[0]);
-  addToLinkedList();
+  _addToLinkedList();
 }
 
 SimLED::SimLED(const int    &ledPin,
@@ -172,46 +174,13 @@ SimLED::SimLED(const int    &ledPin,
 {
   type = SLFloat;
   _drF.assign((const _XpRefStr_ *) &ident[0]);
-  addToLinkedList();
+  _addToLinkedList();
 }
 
-void SimLED::addToLinkedList() {
-  _next = 0;
 
-  if (_first == 0) {
-    _first = this;
-  } else {
-    // Go through linked list and make last existing element point to us
-    SimLED *a = _first;
-    while (a->_next)
-      a = a->_next;
-    a->_next = this;
-  }
-}
-
-void SimLED::setup() {
-  if (_first != 0) {        //!< if at least one SimLED is instantiated
-    SimLED* buf = _first;
-    while (buf != 0) {
-      buf->setup_();
-      buf = buf->_next;
-    }
-  }
-}
-
-void SimLED::update( bool updateOutput) {
-
-  if (_first != 0) {        //!< if at least one SimLED is instantiated
-    SimLED* buf = _first;
-    while (buf != 0) {
-      buf->update_(updateOutput);
-      buf = buf->_next;
-    }
-  }
-}
 
 // Determine whether this SimLED should be lit
-void SimLED::update_(bool updateOutput) {
+void SimLED::_update(bool updateOutput) {
 
   switch(type) {
     case SLInt:
@@ -245,7 +214,6 @@ void SimLED::update_(bool updateOutput) {
 
 
 // Initialise static data members
-SimLED* SimLED::_first  = 0;
 bool SimLED::_hasPower  = true;
 bool SimLED::_testAll   = false;
 
