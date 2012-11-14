@@ -3,10 +3,10 @@
 // Arduino IDE prevents headers being included from within other headers
 #include "Servo.h"
 #include "LiquidCrystalFast.h"
+#include "Bounce.h"
 
 #include "SimLEDDev.h"
 #include "SimServoDev.h"
-#include "Bounce.h"
 
 
 
@@ -120,27 +120,30 @@ SimServo vsi (10,
 // Various SimLEDs
 
 // LED goes on if transponder light is on.
+DataRefIdent ident2[] = "sim/cockpit/radios/transponder_brightness";
+SimLEDFloat xpBr(13, ident2, 0.01, 0.99);
+
 DataRefIdent ident1[] = "sim/cockpit/radios/transponder_light";
-SimLED gearHandle1(12, ident1);
+SimLEDInt transponderLight(12, ident1);
 
 // LED goes on if transponder code is 7700
-DataRefIdent ident2[] = "sim/cockpit/radios/transponder_code";
-SimLED xpdrEmergency(13, ident2, 7700, 7700);
+//DataRefIdent ident2[] = "sim/cockpit/radios/transponder_code";
+//SimLEDInt xpdrEmergency(13, ident2, 7700, 7700, true);
 
 // LED goes on if elevator trim is approaching its limits, when it's
 // NOT between -0.45 and 0.45. The 'true' inverts the active range.
 DataRefIdent ident3[] = "sim/cockpit2/controls/elevator_trim";
-SimLED elevTrimNearLimits(14, ident3, -0.45, 0.45, true);
+SimLEDFloat elTr(14, ident3, -0.45, 0.45, true);
 
 // These three LEDs go on when each gear leg is down and locked.
 DataRefIdent ident4[] = "sim/flightmodel2/gear/deploy_ratio[1]";
-SimLED gearPosLeft(15, ident4, 1.0, 999.0);
+SimLEDFloat gearPosLeft(15, ident4, 1.0, 999.0);
 
 DataRefIdent ident5[] = "sim/flightmodel2/gear/deploy_ratio[0]";
-SimLED gearPosNose(16, ident5, 1.0, 999.0);
+SimLEDFloat gearPosNose(16, ident5, 1.0, 999.0);
 
 DataRefIdent ident6[] = "sim/flightmodel2/gear/deploy_ratio[2]";
-SimLED gearPosRight(17, ident6, 1.0, 999.0);
+SimLEDFloat gearPosRight(17, ident6, 1.0, 999.0);
 
 
 // Ordinary Teensyduino code to give us a bulb-test input
@@ -165,6 +168,9 @@ void setup() {
 
   pinMode (testButtonPin, INPUT_PULLUP);
 
+  //debug
+  //pinMode(14, OUTPUT);
+
   setupLCD(); // You can ignore this.
 }
 
@@ -177,6 +183,9 @@ void loop() {
   SimLED::lightTest(testLights.read());
 
   SimObject::hasPower = (supplyVolts > voltsNeeded);
+
+  // debug
+//  digitalWrite(14, transponderBrightness.isActive());
 
   updateLCD(); // You can ignore this too.
 }

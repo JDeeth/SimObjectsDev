@@ -47,14 +47,27 @@ void updateLCD(void) {
       lcd.clear();
 
       lcd.setCursor(0, 0);
-      lcd.print (flapGauge.getInput());
+      lcd.print (xpBr.getLow());
+      lcd.setCursor(4, 0);
+      lcd.print (xpBr.getHigh());
       lcd.setCursor(0, 1);
-      lcd.print (flapGauge.getServoAngle());
+      lcd.print (xpBr.getDR());
 
-      lcd.setCursor(6, 0);
-      lcd.print (vsi.getInput());
-      lcd.setCursor (6, 1);
-      lcd.print (vsi.getServoAngle());
+      lcd.setCursor(8, 0);
+      lcd.print (elTr.getLow());
+      lcd.setCursor(12, 0);
+      lcd.print (elTr.getHigh());
+      lcd.setCursor(8, 1);
+      lcd.print (elTr.getDR());
+
+//      lcd.print (flapGauge.getInput());
+//      lcd.setCursor(0, 1);
+//      lcd.print (flapGauge.getServoAngle());
+
+//      lcd.setCursor(6, 0);
+//      lcd.print (vsi.getInput());
+//      lcd.setCursor (6, 1);
+//      lcd.print (vsi.getServoAngle());
     }
   } else { //flightsim
     analogWrite(BACKLIGHT, 0);
