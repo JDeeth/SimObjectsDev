@@ -34,7 +34,7 @@
 
 //! High-level dataref-to-LED linking class
 /*! Incorporating bulb-test and power-available features.*/
-class SimLED : public SimObject {
+class SimLEDBase : public SimObject {
 public:
   /// True if input conditions would cause this LED to light
   bool isActive(void) { return _active; }
@@ -49,14 +49,12 @@ public:
   void enableTest (bool allowTest)      {_allowTest = allowTest;}
 
 protected:
-  SimLED(const int  &ledPin,
-         const bool &invertLimits,
+  SimLEDBase(const int  &ledPin,
          const bool &enableTest,
          const bool *hasPowerFlag
          ) :
     SimObject(hasPowerFlag),
     _pin(ledPin),
-    _inverse(invertLimits),
     _allowTest(enableTest)
   {
     _addToLinkedList();
@@ -68,15 +66,13 @@ private:
   /// Arduino pin number of LED.
   int _pin;
 
-  /// Inverts active state if true.
-  bool _inverse;
 
   bool _lit;
 
   void _setup (void) { pinMode(_pin, OUTPUT); }
   void _update(bool updateOutput = true);
 
-  virtual bool _isBetweenLimits() = 0;
+  virtual void _updateActive() = 0;
 
   bool _allowTest;
 
@@ -89,13 +85,9 @@ private:
 
 
 // Determine whether this SimLED should be lit
-void SimLED::_update(bool updateOutput) {
+void SimLEDBase::_update(bool updateOutput) {
 
-  _active = _isBetweenLimits();
-
-  if (_inverse == true) {
-    _active = _active? false: true;
-  }
+  _updateActive();
 
   _lit = _active;
 
@@ -115,24 +107,24 @@ void SimLED::_update(bool updateOutput) {
 
 
 // Initialise static data members
-bool SimLED::_testAll   = false;
+bool SimLEDBase::_testAll   = false;
 
 
 
 
 
-class SimLEDInt : public SimLED {
+class SimLEDIntDR : public SimLEDBase {
 public:
-  SimLEDInt(const int    &ledPin,
+  SimLEDIntDR(const int    &ledPin,
             const char * ident,
             const int    &lowLimit     = 1,
             const int    &highLimit    = 32000,
             const bool   &invertLimits = false,
             const bool   &enableTest   = true,
             const bool   *hasPowerFlag = &SimObject::hasPower
-      ) : SimLED(ledPin, invertLimits, enableTest, hasPowerFlag)
+      ) : SimLEDBase(ledPin, enableTest, hasPowerFlag)
   {
-    _drInt.assign((const _XpRefStr_ *) &ident[0]);
+    _drInt.assign((const _XpRefStr_ *) ident);
 
     if (lowLimit < highLimit) {
       _lowLimitInt = lowLimit;
@@ -141,32 +133,38 @@ public:
       _lowLimitInt = highLimit;
       _highLimitInt = lowLimit;
     }
+    _inverse = invertLimits;
+
   } // constructor
 
 private:
   FlightSimInteger _drInt;
   int _lowLimitInt;
   int _highLimitInt;
+  bool _inverse;
 
-  bool _isBetweenLimits() {
-    return (_lowLimitInt <= _drInt && _drInt <= _highLimitInt);
+  void _updateActive() {
+    _active = (_lowLimitInt <= _drInt && _drInt <= _highLimitInt);
+    if (_inverse == true) {
+      _active = _active? false: true;
+    }
   }
 };
 
 
 
-class SimLEDFloat : public SimLED {
+class SimLEDFloatDR : public SimLEDBase {
 public:
-  SimLEDFloat(const int    &ledPin,
+  SimLEDFloatDR(const int    &ledPin,
               const char * ident,
               const float  &lowLimit,
               const float  &highLimit,
               const bool   &invertLimits = false,
               const bool   &enableTest   = true,
               const bool   *hasPowerFlag = &SimObject::hasPower
-      ) : SimLED(ledPin, invertLimits, enableTest, hasPowerFlag)
+      ) : SimLEDBase(ledPin, enableTest, hasPowerFlag)
   {
-    _drFloat.assign((const _XpRefStr_ *) &ident[0]);
+    _drFloat.assign((const _XpRefStr_ *) ident);
 
     if (lowLimit < highLimit) {
       _lowLimitFloat = lowLimit;
@@ -175,23 +173,41 @@ public:
       _lowLimitFloat = highLimit;
       _highLimitFloat = lowLimit;
     }
-  } // constructor
 
-  // debug
-  float getLow () {return _lowLimitFloat;}
-  float getHigh () {return _highLimitFloat;}
-  float getDR () {return _drFloat;}
+    _inverse = invertLimits;
+  } // constructor
 
 private:
   FlightSimFloat _drFloat;
   double _lowLimitFloat;
   double _highLimitFloat;
+  bool _inverse;
 
-  bool _isBetweenLimits() {
-    return (   _lowLimitFloat <= _drFloat
-               && _drFloat <= _highLimitFloat);
+  void _updateActive() {
+    _active = (   _lowLimitFloat <= _drFloat
+                 && _drFloat <= _highLimitFloat);
+    if (_inverse == true) {
+      _active = _active? false: true;
+    }
   }
+
 };
 
+class SimLEDLocal : public SimLEDBase {
+public:
+  SimLEDLocal(const int  &ledPin,
+              const bool &enableTest = true,
+              const bool *hasPowerFlag = &SimObject::hasPower)
+    : SimLEDBase(ledPin, enableTest, hasPowerFlag)
+  {
+  _active = false;
+  }
+
+  void setActive(bool active) { _active = active; }
+
+private:
+  void _updateActive() {}
+
+};
 
 #endif // SIMLEDDEV_H
