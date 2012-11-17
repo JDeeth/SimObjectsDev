@@ -33,7 +33,6 @@
 #include "SimObjectsDev.h"
 
 
-
 //! Input/output pairs for conversion
 typedef const double ScaleMap [][2];
 

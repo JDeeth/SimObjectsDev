@@ -68,6 +68,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
+      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -90,7 +91,7 @@ $(document).ready(function(){initNavTree('_l_c_d_output_8h_source.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -104,7 +105,7 @@ $(document).ready(function(){initNavTree('_l_c_d_output_8h_source.html','');});
 <div class="title">C:/Dev/xteensy/SimObjectsDev/LCDOutput.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// I don&#39;t have any servos, so I&#39;m using an LCD to display the results</span></div>
+<a href="_l_c_d_output_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// I don&#39;t have any servos, so I&#39;m using an LCD to display the results</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// for testing purposes. I&#39;m putting the LCD declarations/setup/updates</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// over here to stop it distracting from the normal use of the</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// SimObjects</span></div>
@@ -116,81 +117,82 @@ $(document).ready(function(){initNavTree('_l_c_d_output_8h_source.html','');});
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;LiquidCrystalFast.h&gt;</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// LCD declarations</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">enum</span> LCD_PINS {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  RS = 27,</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  RW = 0,</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  EN,</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  D4,</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  D5,</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  D6,</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  D7,</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  BACKLIGHT = 24</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488b">   13</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488b">LCD_PINS</a> {</div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488ba7c1dca0addd3da052405a264b9d8f333">   14</a></span>&#160;  <a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488ba7c1dca0addd3da052405a264b9d8f333">RS</a> = 27,</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488baec2497e0c8af01c04bec31ec0d1d7847">   15</a></span>&#160;  <a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488baec2497e0c8af01c04bec31ec0d1d7847">RW</a> = 0,</div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488ba08abbedba04efb41214496f901134dfb">   16</a></span>&#160;  <a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488ba08abbedba04efb41214496f901134dfb">EN</a>,</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488ba12761dd9f3b74590b720d87d6ca9fbcf">   17</a></span>&#160;  <a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488ba12761dd9f3b74590b720d87d6ca9fbcf">D4</a>,</div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488ba9bfc9615ce2836fe43fe37e0eda2a68a">   18</a></span>&#160;  <a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488ba9bfc9615ce2836fe43fe37e0eda2a68a">D5</a>,</div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488bab6e74cb404ad3a7370b6cbb05f004fcb">   19</a></span>&#160;  <a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488bab6e74cb404ad3a7370b6cbb05f004fcb">D6</a>,</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488ba0701f86c777d8dde5be3a916a510cdfa">   20</a></span>&#160;  <a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488ba0701f86c777d8dde5be3a916a510cdfa">D7</a>,</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488bae4223ff044f08155ab2970a575403c3b">   21</a></span>&#160;  <a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488bae4223ff044f08155ab2970a575403c3b">BACKLIGHT</a> = 24</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;};</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;LiquidCrystalFast lcd(RS, RW, EN, D4, D5, D6, D7);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;LiquidCrystalFast <a class="code" href="_l_c_d_output_8h.html#ad82049471736747cc67bbcd5ca13287b">lcd</a>(<a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488ba7c1dca0addd3da052405a264b9d8f333">RS</a>, <a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488baec2497e0c8af01c04bec31ec0d1d7847">RW</a>, <a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488ba08abbedba04efb41214496f901134dfb">EN</a>, <a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488ba12761dd9f3b74590b720d87d6ca9fbcf">D4</a>, <a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488ba9bfc9615ce2836fe43fe37e0eda2a68a">D5</a>, <a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488bab6e74cb404ad3a7370b6cbb05f004fcb">D6</a>, <a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488ba0701f86c777d8dde5be3a916a510cdfa">D7</a>);</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// timer to prevent LCD updating too fast</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;elapsedMillis lcdTimer = 0;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">const</span> <span class="keywordtype">int</span> lcdPeriod = 200;</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="code" href="_l_c_d_output_8h.html#a294a983dd060d6738f5afbf29e7630d8">   29</a></span>&#160;elapsedMillis <a class="code" href="_l_c_d_output_8h.html#a294a983dd060d6738f5afbf29e7630d8">lcdTimer</a> = 0;</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="code" href="_l_c_d_output_8h.html#a673d6dc66edc3a7b0a82a8c9f96a9989">   30</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="_l_c_d_output_8h.html#a673d6dc66edc3a7b0a82a8c9f96a9989">lcdPeriod</a> = 200;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keywordtype">void</span> setupLCD(<span class="keywordtype">void</span>) {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  pinMode (BACKLIGHT, OUTPUT);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  analogWrite (BACKLIGHT, 128);</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="code" href="_l_c_d_output_8h.html#a556fd7a842a2430b9cf8b64c7744d848">   33</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="_l_c_d_output_8h.html#a556fd7a842a2430b9cf8b64c7744d848">setupLCD</a>(<span class="keywordtype">void</span>) {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  pinMode (<a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488bae4223ff044f08155ab2970a575403c3b">BACKLIGHT</a>, OUTPUT);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  analogWrite (<a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488bae4223ff044f08155ab2970a575403c3b">BACKLIGHT</a>, 128);</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  lcd.begin (16, 2);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <a class="code" href="_l_c_d_output_8h.html#ad82049471736747cc67bbcd5ca13287b">lcd</a>.begin (16, 2);</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">void</span> updateLCD(<span class="keywordtype">void</span>) {</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="_l_c_d_output_8h.html#aa6e135f56218e197e8df2ba0ba481f6d">   41</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="_l_c_d_output_8h.html#aa6e135f56218e197e8df2ba0ba481f6d">updateLCD</a>(<span class="keywordtype">void</span>) {</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordflow">if</span> (FlightSim.isEnabled()) {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    analogWrite(BACKLIGHT, 128);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">if</span> (lcdTimer &gt; lcdPeriod) {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      lcdTimer = 0;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    analogWrite(<a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488bae4223ff044f08155ab2970a575403c3b">BACKLIGHT</a>, 128);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="_l_c_d_output_8h.html#a294a983dd060d6738f5afbf29e7630d8">lcdTimer</a> &gt; <a class="code" href="_l_c_d_output_8h.html#a673d6dc66edc3a7b0a82a8c9f96a9989">lcdPeriod</a>) {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      <a class="code" href="_l_c_d_output_8h.html#a294a983dd060d6738f5afbf29e7630d8">lcdTimer</a> = 0;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      lcd.clear();</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      <a class="code" href="_l_c_d_output_8h.html#ad82049471736747cc67bbcd5ca13287b">lcd</a>.clear();</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      lcd.setCursor(0, 0);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      lcd.print (xpBr.getLow());</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      lcd.setCursor(4, 0);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      lcd.print (xpBr.getHigh());</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      lcd.setCursor(0, 1);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      lcd.print (xpBr.getDR());</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      <span class="comment">//      lcd.setCursor(0, 0);</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      <span class="comment">//      lcd.print (xpBr.getLow());</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      <span class="comment">//      lcd.setCursor(4, 0);</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      <span class="comment">//      lcd.print (xpBr.getHigh());</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="comment">//      lcd.setCursor(0, 1);</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      <span class="comment">//      lcd.print (xpBr.getDR());</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      lcd.setCursor(8, 0);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      lcd.print (elTr.getLow());</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      lcd.setCursor(12, 0);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      lcd.print (elTr.getHigh());</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      lcd.setCursor(8, 1);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      lcd.print (elTr.getDR());</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      <span class="comment">//      lcd.setCursor(8, 0);</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      <span class="comment">//      lcd.print (elTr.getLow());</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="comment">//      lcd.setCursor(12, 0);</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="comment">//      lcd.print (elTr.getHigh());</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      <span class="comment">//      lcd.setCursor(8, 1);</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      <span class="comment">//      lcd.print (elTr.getDR());</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">//      lcd.print (flapGauge.getInput());</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">//      lcd.setCursor(0, 1);</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">//      lcd.print (flapGauge.getServoAngle());</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">//      lcd.setCursor(6, 0);</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">//      lcd.print (vsi.getInput());</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">//      lcd.setCursor (6, 1);</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">//      lcd.print (vsi.getServoAngle());</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  } <span class="keywordflow">else</span> { <span class="comment">//flightsim</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    analogWrite(BACKLIGHT, 0);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    lcd.clear();</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      <a class="code" href="_l_c_d_output_8h.html#ad82049471736747cc67bbcd5ca13287b">lcd</a>.setCursor(0, 0);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <a class="code" href="_l_c_d_output_8h.html#ad82049471736747cc67bbcd5ca13287b">lcd</a>.print (flapGauge.getInput());</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      <a class="code" href="_l_c_d_output_8h.html#ad82049471736747cc67bbcd5ca13287b">lcd</a>.setCursor(0, 1);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      <a class="code" href="_l_c_d_output_8h.html#ad82049471736747cc67bbcd5ca13287b">lcd</a>.print (flapGauge.getServoAngle());</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <a class="code" href="_l_c_d_output_8h.html#ad82049471736747cc67bbcd5ca13287b">lcd</a>.setCursor(6, 0);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <a class="code" href="_l_c_d_output_8h.html#ad82049471736747cc67bbcd5ca13287b">lcd</a>.print (vsi.getInput());</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <a class="code" href="_l_c_d_output_8h.html#ad82049471736747cc67bbcd5ca13287b">lcd</a>.setCursor (6, 1);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      <a class="code" href="_l_c_d_output_8h.html#ad82049471736747cc67bbcd5ca13287b">lcd</a>.print (vsi.getServoAngle());</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  } <span class="keywordflow">else</span> { <span class="comment">//flightsim</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    analogWrite(<a class="code" href="_l_c_d_output_8h.html#af6c8b90eb0f68b695ff803a99308488bae4223ff044f08155ab2970a575403c3b">BACKLIGHT</a>, 0);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="_l_c_d_output_8h.html#ad82049471736747cc67bbcd5ca13287b">lcd</a>.clear();</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>LCDOutput.h</b></li>
-    <li class="footer">Generated on Wed Nov 14 2012 21:04:52 for SimObjects by
+    <li class="navelem"><a class="el" href="_l_c_d_output_8h.html">LCDOutput.h</a></li>
+    <li class="footer">Generated on Fri Nov 16 2012 00:10:09 for SimObjects by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

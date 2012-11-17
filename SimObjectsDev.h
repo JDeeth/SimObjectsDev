@@ -51,11 +51,6 @@
 
 class SimObject {
 public:
-  SimObject(const bool *powerSource) {
-    setPowerSource(powerSource);
-  }
-
-
   //! \param powerSource Pointer to bool which defines whether simulated
   //!        power is available to this SimObject
   void setPowerSource (const bool * powerSource) {
@@ -75,6 +70,10 @@ public:
   static bool hasPower;
 
 protected:
+  SimObject(const bool *powerSource) {
+    setPowerSource(powerSource);
+  }
+
   virtual void _addToLinkedList(void);
   virtual void _setup (void) =0;
   virtual void _update(bool updateOutput = true) =0;
